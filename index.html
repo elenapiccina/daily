@@ -25,7 +25,6 @@
             justify-content: center;
         }
 
-        /* Super compact container spacing adjustments */
         .widget-container {
             width: 100%;
             max-width: 440px;
@@ -107,14 +106,13 @@
             margin-bottom: 10px;
         }
 
-        /* Large, bold pink background container driven by formula results */
         .quote-block-pink {
             background-color: var(--accent-pink);
             color: var(--text-pink);
             padding: 12px;
             border-radius: 8px;
-            font-size: 1.15rem; /* Large font size mirroring h2 template formula */
-            font-weight: bold; /* Bold styling format */
+            font-size: 1.15rem; 
+            font-weight: bold; 
             line-height: 1.4;
             margin-bottom: 14px;
             text-align: center;
@@ -183,37 +181,34 @@
 
     <div class="meta-status-row">
         <div class="energy-select-wrapper">
-            <!-- Dropdown config mapped into your formula keys -->
-            <select id="chaosSelect" onchange="runChaosFormula()">
-                <option value="none">☕ Select Chaos Level...</option>
-                <option value="🌀 Hurricane">🌀 Hurricane</option>
-                <option value="⛈️ Stormy">⛈️ Stormy</option>
-                <option value="🌪️ Windy">🌪️ Windy</option>
-                <option value="🌤️ Manageable">🌤️ Manageable</option>
-                <option value="🌊 Calm">🌊 Calm</option>
+            <!-- Restored Energy Options -->
+            <select id="energySelect" onchange="runEnergyFormula()">
+                <option value="💡 Manageable">☀️ Manageable</option>
+                <option value="⚡️ High Energy">⚡️ High Energy</option>
+                <option value="🔋 Unstoppable">🔋 Unstoppable</option>
+                <option value="💤 Low Energy">💤 Low Energy</option>
             </select>
         </div>
         <div class="date-display" id="currentDateDisplay">Loading date...</div>
     </div>
 
+    <!-- Restored Tate Quotes Box -->
     <div class="quote-block-green" id="mainMotivationalQuote">
         Loading motivation...
     </div>
 
-    <!-- Target calculations output display panel -->
     <div class="quote-block-pink" id="formulaGuidanceDisplay">
-        ☕ Select your Chaos Level to get today's guidance.
+        ☕ Select your Energy Level to get today's guidance.
     </div>
 
     <div class="streak-footer-row">
         <div class="streak-info">
             <span id="streakNumberDisplay" style="font-weight: bold; color: var(--text-dark);">0</span> 
             <span>🌱</span> 
-            <span id="streakTextDisplay">0 days row</span>
+            <span id="streakTextDisplay">0 days in a row! Momentum is gathering.</span>
         </div>
         <div class="action-btns-group">
             <button class="btn-streak-increment" onclick="logStreakDay()">+ log day</button>
-            <!-- New custom reset button next to routine day logger -->
             <button class="btn-reset-icon" onclick="resetStreak()" title="Reset counter">🔄</button>
         </div>
     </div>
@@ -230,8 +225,8 @@
         "👁 Real routine momentum gathers when you stop negotiating with your own lazy thoughts."
     ];
 
-    let controlData = JSON.parse(localStorage.getItem('notion_chaos_calc_v1')) || {
-        chaosLevel: "none",
+    let controlData = JSON.parse(localStorage.getItem('notion_energy_calc_final')) || {
+        energyLevel: "💡 Manageable",
         streak: 0
     };
 
@@ -244,44 +239,47 @@
         document.getElementById('mainMotivationalQuote').innerText = tateQuotes[quoteIndex];
     }
 
-    // Exact computation clone matching your formula text configurations
-    function runChaosFormula() {
-        const selectVal = document.getElementById('chaosSelect').value;
-        controlData.chaosLevel = selectVal;
-        localStorage.setItem('notion_chaos_calc_v1', JSON.stringify(controlData));
+    // Formulas calculated based on your Energy Level selection inputs
+    function runEnergyFormula() {
+        const selectVal = document.getElementById('energySelect').value;
+        controlData.energyLevel = selectVal;
+        localStorage.setItem('notion_energy_calc_final', JSON.stringify(controlData));
 
         let textOutput = "";
 
-        if (selectVal === "🌀 Hurricane" || selectVal === "⛈️ Stormy") {
+        if (selectVal === "💤 Low Energy") {
             textOutput = "🫶 Just 1 thing today. That's a full day. Breathe.";
-        } else if (selectVal === "🌪️ Windy") {
-            textOutput = "⚡ Focus on your Top 1-2 items. Let the rest slide.";
-        } else if (selectVal === "🌤️ Manageable" || selectVal === "🌊 Calm") {
+        } else if (selectVal === "💡 Manageable") {
             textOutput = "✨ You've got room for your Top 3. Let's do this!";
+        } else if (selectVal === "⚡️ High Energy") {
+            textOutput = "⚡ Focus on your Top 1-2 items. Let the rest slide.";
+        } else if (selectVal === "🔋 Unstoppable") {
+            textOutput = "🔥 Destroyer mode. Crush every single goal today.";
         } else {
-            textOutput = "☕ Select your Chaos Level to get today's guidance.";
+            textOutput = "☕ Select your Energy Level to get today's guidance.";
         }
 
         document.getElementById('formulaGuidanceDisplay').innerText = textOutput;
     }
 
     function renderControlState() {
-        document.getElementById('chaosSelect').value = controlData.chaosLevel;
+        document.getElementById('energySelect').value = controlData.energyLevel;
         document.getElementById('streakNumberDisplay').innerText = controlData.streak;
-        document.getElementById('streakTextDisplay').innerText = `${controlData.streak} days in a row!`;
-        runChaosFormula();
+        document.getElementById('streakTextDisplay').innerText = `${controlData.streak} days in a row! Momentum is gathering.`;
+        runEnergyFormula();
     }
 
     function logStreakDay() {
         controlData.streak++;
-        localStorage.setItem('notion_chaos_calc_v1', JSON.stringify(controlData));
+        localStorage.setItem('notion_energy_calc_final', JSON.stringify(controlData));
         renderControlState();
     }
 
+    // Fixed Reset execution trigger script
     function resetStreak() {
         if (confirm("Reset logged routine days back to 0?")) {
             controlData.streak = 0;
-            localStorage.setItem('notion_chaos_calc_v1', JSON.stringify(controlData));
+            localStorage.setItem('notion_energy_calc_final', JSON.stringify(controlData));
             renderControlState();
         }
     }
