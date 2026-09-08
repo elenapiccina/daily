@@ -10,8 +10,8 @@
             --text-muted: #746264;
             --accent-green: #e1efe3;
             --text-green: #386b42;
-            --accent-pink: #fdebee;
-            --text-pink: #9e2a4b;
+            --pink-bg-pill: #FCE4EC; /* Pink background requested by style formula */
+            --text-pink-pill: #C2185B;
             --bg-card: #ffffff;
             --border-light: #efeae4;
         }
@@ -20,126 +20,144 @@
             font-family: Georgia, Cambria, "Times New Roman", Times, serif;
             background-color: transparent;
             margin: 0;
-            padding: 8px;
+            padding: 4px;
             display: flex;
             justify-content: center;
         }
 
+        /* Highly compact container wrapper card */
         .widget-container {
             width: 100%;
-            max-width: 480px;
+            max-width: 440px;
             background-color: var(--bg-card);
             border: 1px solid var(--border-light);
-            border-radius: 16px;
-            padding: 24px;
+            border-radius: 12px;
+            padding: 16px;
             box-sizing: border-box;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #F6F2EE;
+            padding-bottom: 6px;
         }
 
         .header-title {
-            font-size: 1.3rem;
-            font-weight: normal;
-            letter-spacing: 1px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
             color: var(--text-dark);
-            margin: 0 0 16px 0;
+            margin: 0;
+        }
+
+        .date-display {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Compact Selection controls block row layout */
+        .control-inputs-row {
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-bottom: 14px;
         }
 
-        .meta-status-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+        .label-text {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            font-weight: 500;
         }
 
-        .energy-select-wrapper {
+        .select-wrapper {
             position: relative;
         }
 
         select {
             font-family: inherit;
-            font-size: 0.85rem;
-            background-color: #f3f3f3;
+            font-size: 0.8rem;
+            background-color: #f5f5f5;
             color: var(--text-dark);
             border: none;
             border-radius: 6px;
-            padding: 4px 8px;
+            padding: 4px 20px 4px 8px;
             cursor: pointer;
             outline: none;
             appearance: none;
-            padding-right: 18px;
+            font-weight: 500;
         }
 
-        .energy-select-wrapper::after {
+        .select-wrapper::after {
             content: "▾";
             position: absolute;
             right: 6px;
             top: 2px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
             pointer-events: none;
         }
 
-        .date-display {
-            font-size: 0.95rem;
-            color: var(--text-dark);
-        }
-
+        /* Daily Curated motivational quote row */
         .quote-block-green {
             background-color: var(--accent-green);
             color: var(--text-green);
-            padding: 14px;
+            padding: 10px 12px;
             border-radius: 6px;
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             line-height: 1.4;
             font-weight: bold;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
-        .quote-block-pink {
-            background-color: var(--accent-pink);
-            color: var(--text-pink);
-            padding: 14px;
-            border-radius: 6px;
-            font-size: 0.95rem;
+        /* Dynamic formula text block stylized with h2 size, bold, and pink background */
+        .formula-guidance-pink-block {
+            background-color: var(--pink-bg-pill);
+            color: var(--text-pink-pill);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1.15rem; /* Large text mirroring h2 formula style request */
+            font-weight: bold; /* Bold mirroring b formula style request */
             line-height: 1.4;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
+            border: 1px solid rgba(244, 67, 54, 0.05);
+            text-align: center;
         }
 
-        /* Fixed wide-align layout matrix row at the base */
+        /* Minimal Streak logging footer section */
         .streak-footer-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
-            border-top: 1px solid #f9f6f2;
-            padding-top: 14px;
+            gap: 8px;
+            border-top: 1px solid #fcf9f6;
+            padding-top: 10px;
             width: 100%;
         }
 
         .streak-info {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.9rem;
+            gap: 4px;
+            font-size: 0.82rem;
             color: var(--text-muted);
-            white-space: nowrap; /* Prevents text splitting into multiple lines */
+            white-space: nowrap;
         }
 
         .btn-streak-increment {
-            background: none;
+            background: #ffffff;
             border: 1px solid var(--border-light);
             border-radius: 6px;
             color: var(--text-dark);
             cursor: pointer;
             font-family: inherit;
-            font-size: 0.8rem;
-            padding: 4px 10px;
-            white-space: nowrap; /* Keeps button text on one unified block */
-            background-color: #ffffff;
+            font-size: 0.78rem;
+            padding: 3px 8px;
+            white-space: nowrap;
         }
         .btn-streak-increment:hover { background: #fafafa; border-color: var(--text-muted); }
     </style>
@@ -147,33 +165,41 @@
 <body>
 
 <div class="widget-container">
-    <h1 class="header-title">🌸 DAILY CONTROL CENTER</h1>
+    <div class="header-row">
+        <h1 class="header-title">🌸 CONTROL CENTER</h1>
+        <div class="date-display" id="currentDateDisplay">September 8, 2026</div>
+    </div>
 
-    <div class="meta-status-row">
-        <div class="energy-select-wrapper">
-            <select id="energySelect" onchange="saveEnergyLevel()">
-                <option value="💡 Manageable">☀️ Manageable</option>
-                <option value="⚡️ High Energy">⚡️ High Energy</option>
-                <option value="🔋 Unstoppable">🔋 Unstoppable</option>
-                <option value="💤 Low Energy">💤 Low Energy</option>
+    <div class="control-inputs-row">
+        <span class="label-text">Chaos Level:</span>
+        <div class="select-wrapper">
+            <!-- Automatically hooks up custom tracking formulas to the selection state -->
+            <select id="chaosSelect" onchange="runChaosFormulaLogic()">
+                <option value="none">☕ Select Level...</option>
+                <option value="🌀 Hurricane">🌀 Hurricane</option>
+                <option value="⛈️ Stormy">⛈️ Stormy</option>
+                <option value="🌪️ Windy">🌪️ Windy</option>
+                <option value="🌤️ Manageable">🌤️ Manageable</option>
+                <option value="🌊 Calm">🌊 Calm</option>
             </select>
         </div>
-        <div class="date-display" id="currentDateDisplay">September 2, 2026</div>
     </div>
 
+    <!-- Active rotating daily quote block line -->
     <div class="quote-block-green" id="mainMotivationalQuote">
-        👁 Close your eyes. Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.
+        Loading motivation...
     </div>
 
-    <div class="quote-block-pink">
-        ✨ You've got room for your Top 3. Let's do this!
+    <!-- Live calculated template container block rendering pink background text rows -->
+    <div class="formula-guidance-pink-block" id="formulaGuidanceDisplay">
+        ☕ Select your Chaos Level to get today's guidance.
     </div>
 
     <div class="streak-footer-row">
         <div class="streak-info">
             <span id="streakNumberDisplay" style="font-weight: bold; color: var(--text-dark);">0</span> 
             <span>🌱</span> 
-            <span id="streakTextDisplay">0 days in a row! Momentum is gathering.</span>
+            <span id="streakTextDisplay">0 days streak tracker</span>
         </div>
         <button class="btn-streak-increment" onclick="logStreakDay()">+ log day</button>
     </div>
@@ -190,8 +216,8 @@
         "👁 Real routine momentum gathers when you stop negotiating with your own lazy thoughts."
     ];
 
-    let controlData = JSON.parse(localStorage.getItem('notion_control_center_fixed')) || {
-        energy: "💡 Manageable",
+    let controlData = JSON.parse(localStorage.getItem('notion_chaos_control_v2')) || {
+        chaosLevel: "none",
         streak: 0
     };
 
@@ -204,36 +230,45 @@
         document.getElementById('mainMotivationalQuote').innerText = tateQuotes[quoteIndex];
     }
 
-    function renderControlState() {
-        localStorage.setItem('notion_control_center_fixed', JSON.stringify(controlData));
-        
-        document.getElementById('energySelect').value = controlData.energy;
-        document.getElementById('streakNumberDisplay').innerText = controlData.streak;
-        document.getElementById('streakTextDisplay').innerText = `${controlData.streak} days in a row! Momentum is gathering.`;
+    // Exact replica replication of your Notion Formula logic engine properties mapping
+    function runChaosFormulaLogic() {
+        const levelSelection = document.getElementById('chaosSelect').value;
+        controlData.chaosLevel = levelSelection;
+        localStorage.setItem('notion_chaos_control_v2', JSON.stringify(controlData));
+
+        let guidanceText = "";
+
+        if (levelSelection === "🌀 Hurricane" || levelSelection === "⛈️ Stormy") {
+            guidanceText = "🫶 Just 1 thing today. That's a full day. Breathe.";
+        } else if (levelSelection === "🌪️ Windy") {
+            guidanceText = "⚡ Focus on your Top 1-2 items. Let the rest slide.";
+        } else if (levelSelection === "🌤️ Manageable" || levelSelection === "🌊 Calm") {
+            guidanceText = "✨ You've got room for your Top 3. Let's do this!";
+        } else {
+            guidanceText = "☕ Select your Chaos Level to get today's guidance.";
+        }
+
+        // Apply generated result to layout viewport text fields 
+        document.getElementById('formulaGuidanceDisplay').innerText = guidanceText;
     }
 
-    function saveEnergyLevel() {
-        controlData.energy = document.getElementById('energySelect').value;
-        renderControlState();
+    function renderControlState() {
+        document.getElementById('chaosSelect').value = controlData.chaosLevel;
+        document.getElementById('streakNumberDisplay').innerText = controlData.streak;
+        document.getElementById('streakTextDisplay').innerText = `${controlData.streak} days streak row momentum`;
+        runChaosFormulaLogic();
     }
 
     function logStreakDay() {
         controlData.streak++;
+        localStorage.setItem('notion_chaos_control_v2', JSON.stringify(controlData));
         renderControlState();
     }
 
+    // Double-click structural safety background reset shortcut trigger
     window.addEventListener('dblclick', function(e) {
         if(e.target.tagName !== 'SELECT' && e.target.tagName !== 'BUTTON') {
-            if(confirm("Reset streak counter stats back to 0?")) {
+            if(confirm("Reset habit routine streak counter back to 0?")) {
                 controlData.streak = 0;
+                localStorage.setItem('notion_chaos_control_v2', JSON.stringify(controlData));
                 renderControlState();
-            }
-        }
-    });
-
-    setLiveWidgetDate();
-    renderControlState();
-</script>
-
-</body>
-</html>
