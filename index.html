@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -168,10 +168,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
         }
         .btn-reset-icon:hover { background: #fdf2f4; border-color: var(--text-pink); }
-        .btn-reset-icon.confirm-state { background-color: #ffebee; border-color: #ef5350; font-size: 0.72rem; padding: 3px 8px; color: #c62828; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -190,15 +188,15 @@
                 <option value="💤 Low Energy">💤 Low Energy</option>
             </select>
         </div>
-        <div class="date-display" id="currentDateDisplay">Loading date...</div>
+        <div class="date-display" id="currentDateDisplay">Tuesday, September 8, 2026</div>
     </div>
 
     <div class="quote-block-green" id="mainMotivationalQuote">
-        Loading motivation...
+        👁 Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.
     </div>
 
     <div class="quote-block-pink" id="formulaGuidanceDisplay">
-        ☕ Select your Energy Level to get today's guidance.
+        ✨ You've got room for your Top 3. Let's do this!
     </div>
 
     <div class="streak-footer-row">
@@ -209,7 +207,7 @@
         </div>
         <div class="action-btns-group">
             <button class="btn-streak-increment" onclick="logStreakDay()">+ log day</button>
-            <button class="btn-reset-icon" id="resetBtn" onclick="resetStreakNotionSafe()" title="Reset counter">🔄</button>
+            <button class="btn-reset-icon" onclick="resetStreak()" title="Reset counter">🔄</button>
         </div>
     </div>
 </div>
@@ -225,27 +223,21 @@
         "👁 Real routine momentum gathers when you stop negotiating with your own lazy thoughts."
     ];
 
-    let controlData = { energyLevel: "💡 Manageable", streak: 0 };
-    let isConfirmingReset = false;
+    let currentStreakCount = 0;
 
     function setLiveWidgetDate() {
         const today = new Date();
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('currentDateDisplay').innerText = today.toLocaleDateString('en-US', options);
+        
         const quoteIndex = today.getDate() % tateQuotes.length;
         document.getElementById('mainMotivationalQuote').innerText = tateQuotes[quoteIndex];
     }
 
     function runEnergyFormula() {
         const selectVal = document.getElementById('energySelect').value;
-        controlData.energyLevel = selectVal;
-        
-        try {
-            localStorage.setItem('notion_energy_calc_direct_v4', JSON.stringify(controlData));
-        } catch(e) {}
-
         let textOutput = "";
+
         if (selectVal === "💤 Low Energy") {
             textOutput = "🫶 Just 1 thing today. That's a full day. Breathe.";
         } else if (selectVal === "💡 Manageable") {
@@ -253,3 +245,13 @@
         } else if (selectVal === "⚡️ High Energy") {
             textOutput = "⚡ Focus on your Top 1-2 items. Let the rest slide.";
         } else if (selectVal === "🔋 Unstoppable") {
+            textOutput = "🔥 Destroyer mode. Crush every single goal today.";
+        }
+
+        document.getElementById('formulaGuidanceDisplay').innerText = textOutput;
+    }
+
+    function logStreakDay() {
+        currentStreakCount++;
+        updateStreakDisplay();
+    }
