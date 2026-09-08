@@ -118,14 +118,16 @@
             text-align: center;
         }
 
+        /* Responsive footer layout that wraps cleanly if screen space is narrow */
         .streak-footer-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
+            gap: 10px;
             border-top: 1px solid #f9f6f2;
             padding-top: 10px;
             width: 100%;
+            flex-wrap: wrap; 
         }
 
         .streak-info {
@@ -134,7 +136,6 @@
             gap: 4px;
             font-size: 0.85rem;
             color: var(--text-muted);
-            white-space: nowrap;
         }
 
         .action-btns-group {
@@ -168,8 +169,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.15s ease;
         }
         .btn-reset-icon:hover { background: #fdf2f4; border-color: var(--text-pink); }
+        .btn-reset-icon.confirm-state { background-color: #ffebee; border-color: #ef5350; font-size: 0.72rem; padding: 3px 6px; color: #c62828; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -188,11 +191,11 @@
                 <option value="💤 Low Energy">💤 Low Energy</option>
             </select>
         </div>
-        <div class="date-display" id="currentDateDisplay">Loading date...</div>
+        <div class="date-display" id="currentDateDisplay">Tuesday, September 8, 2026</div>
     </div>
 
     <div class="quote-block-green" id="mainMotivationalQuote">
-        Loading motivation...
+        👁 Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.
     </div>
 
     <div class="quote-block-pink" id="formulaGuidanceDisplay">
@@ -207,7 +210,8 @@
         </div>
         <div class="action-btns-group">
             <button class="btn-streak-increment" onclick="logStreakDay()">+ log day</button>
-            <button class="btn-reset-icon" onclick="resetStreak()" title="Reset counter">🔄</button>
+            <!-- Safe two-click reset prompt designed natively for Notion iframe environments -->
+            <button class="btn-reset-icon" id="resetBtn" onclick="resetStreakNotionSafe()" title="Reset counter">🔄</button>
         </div>
     </div>
 </div>
@@ -223,16 +227,28 @@
         "👁 Real routine momentum gathers when you stop negotiating with your own lazy thoughts."
     ];
 
-    let currentStreakCount = 0;
+    let controlData = JSON.parse(localStorage.getItem('notion_control_final_v10')) || {
+        energyLevel: "💡 Manageable",
+        streak: 0
+    };
+
+    let isConfirmingReset = false;
+
+    function setLiveWidgetDate() {
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDateDisplay').innerText = today.toLocaleDateString('en-US', options);
+        
+        const quoteIndex = today.getDate() % tateQuotes.length;
+        document.getElementById('mainMotivationalQuote').innerText = tateQuotes[quoteIndex];
+    }
 
     function runEnergyFormula() {
-        const selectBox = document.getElementById('energySelect');
-        const guidanceBox = document.getElementById('formulaGuidanceDisplay');
-        if (!selectBox || !guidanceBox) return;
+        const selectVal = document.getElementById('energySelect').value;
+        controlData.energyLevel = selectVal;
+        localStorage.setItem('notion_control_final_v10', JSON.stringify(controlData));
 
-        const selectVal = selectBox.value;
         let textOutput = "";
-
         if (selectVal === "💤 Low Energy") {
             textOutput = "🫶 Just 1 thing today. That's a full day. Breathe.";
         } else if (selectVal === "💡 Manageable") {
@@ -243,11 +259,28 @@
             textOutput = "🔥 Destroyer mode. Crush every single goal today.";
         }
 
-        guidanceBox.innerText = textOutput;
+        document.getElementById('formulaGuidanceDisplay').innerText = textOutput;
     }
 
-    function setLiveWidgetDate() {
-        const today = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('currentDateDisplay').innerText = today.toLocaleDateString('en-US', options);
-        const quoteIndex = today.getDate() % tateQuotes.length;
+    function renderControlState() {
+        document.getElementById('energySelect').value = controlData.energyLevel;
+        document.getElementById('streakNumberDisplay').innerText = controlData.streak;
+        document.getElementById('streakTextDisplay').innerText = `${controlData.streak} days in a row! Momentum is gathering.`;
+        runEnergyFormula();
+    }
+
+    function logStreakDay() {
+        controlData.streak++;
+        localStorage.setItem('notion_control_final_v10', JSON.stringify(controlData));
+        renderControlState();
+        cancelResetState();
+    }
+
+    function resetStreakNotionSafe() {
+        const btn = document.getElementById('resetBtn');
+        if (!btn) return;
+        
+        if (!isConfirmingReset) {
+            isConfirmingReset = true;
+            btn.innerText = "Sure?";
+            btn.classList.add('confirm-state');
