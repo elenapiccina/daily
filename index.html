@@ -168,8 +168,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.2s;
         }
         .btn-reset-icon:hover { background: #fdf2f4; border-color: var(--text-pink); }
+        .btn-reset-icon.confirm-state { background-color: #ffebee; border-color: #ef5350; font-size: 0.72rem; padding: 3px 8px; color: #c62828; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -181,7 +183,6 @@
 
     <div class="meta-status-row">
         <div class="energy-select-wrapper">
-            <!-- Restored Energy Options -->
             <select id="energySelect" onchange="runEnergyFormula()">
                 <option value="💡 Manageable">☀️ Manageable</option>
                 <option value="⚡️ High Energy">⚡️ High Energy</option>
@@ -192,7 +193,6 @@
         <div class="date-display" id="currentDateDisplay">Loading date...</div>
     </div>
 
-    <!-- Restored Tate Quotes Box -->
     <div class="quote-block-green" id="mainMotivationalQuote">
         Loading motivation...
     </div>
@@ -209,7 +209,8 @@
         </div>
         <div class="action-btns-group">
             <button class="btn-streak-increment" onclick="logStreakDay()">+ log day</button>
-            <button class="btn-reset-icon" onclick="resetStreak()" title="Reset counter">🔄</button>
+            <!-- Upgraded Notion-Safe Reset Button -->
+            <button class="btn-reset-icon" id="resetBtn" onclick="resetStreakNotionSafe()" title="Reset counter">🔄</button>
         </div>
     </div>
 </div>
@@ -225,10 +226,12 @@
         "👁 Real routine momentum gathers when you stop negotiating with your own lazy thoughts."
     ];
 
-    let controlData = JSON.parse(localStorage.getItem('notion_energy_calc_final')) || {
+    let controlData = JSON.parse(localStorage.getItem('notion_energy_calc_safe')) || {
         energyLevel: "💡 Manageable",
         streak: 0
     };
+
+    let isConfirmingReset = false;
 
     function setLiveWidgetDate() {
         const today = new Date();
@@ -239,11 +242,10 @@
         document.getElementById('mainMotivationalQuote').innerText = tateQuotes[quoteIndex];
     }
 
-    // Formulas calculated based on your Energy Level selection inputs
     function runEnergyFormula() {
         const selectVal = document.getElementById('energySelect').value;
         controlData.energyLevel = selectVal;
-        localStorage.setItem('notion_energy_calc_final', JSON.stringify(controlData));
+        localStorage.setItem('notion_energy_calc_safe', JSON.stringify(controlData));
 
         let textOutput = "";
 
@@ -263,6 +265,8 @@
     }
 
     function renderControlState() {
+        localStorage.setItem('notion_energy_calc_safe', JSON.stringify(controlData));
+        
         document.getElementById('energySelect').value = controlData.energyLevel;
         document.getElementById('streakNumberDisplay').innerText = controlData.streak;
         document.getElementById('streakTextDisplay').innerText = `${controlData.streak} days in a row! Momentum is gathering.`;
@@ -271,22 +275,13 @@
 
     function logStreakDay() {
         controlData.streak++;
-        localStorage.setItem('notion_energy_calc_final', JSON.stringify(controlData));
+        localStorage.setItem('notion_energy_calc_safe', JSON.stringify(controlData));
         renderControlState();
+        cancelResetState(); // Clear reset prompt if logging days
     }
 
-    // Fixed Reset execution trigger script
-    function resetStreak() {
-        if (confirm("Reset logged routine days back to 0?")) {
-            controlData.streak = 0;
-            localStorage.setItem('notion_energy_calc_final', JSON.stringify(controlData));
-            renderControlState();
-        }
-    }
-
-    setLiveWidgetDate();
-    renderControlState();
-</script>
-
-</body>
-</html>
+    // Two-Click safety confirmation system designed natively to work inside Notion frames
+    function resetStreakNotionSafe() {
+        const btn = document.getElementById('resetBtn');
+        
+        if (!isConfirmingReset) {
