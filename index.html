@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -209,7 +209,6 @@
         </div>
         <div class="action-btns-group">
             <button class="btn-streak-increment" onclick="logStreakDay()">+ log day</button>
-            <!-- Upgraded Notion-Safe Reset Button -->
             <button class="btn-reset-icon" id="resetBtn" onclick="resetStreakNotionSafe()" title="Reset counter">🔄</button>
         </div>
     </div>
@@ -226,62 +225,36 @@
         "👁 Real routine momentum gathers when you stop negotiating with your own lazy thoughts."
     ];
 
-    let controlData = JSON.parse(localStorage.getItem('notion_energy_calc_safe')) || {
-        energyLevel: "💡 Manageable",
-        streak: 0
-    };
-
+    let controlData = { energyLevel: "💡 Manageable", streak: 0 };
     let isConfirmingReset = false;
 
     function setLiveWidgetDate() {
         const today = new Date();
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('currentDateDisplay').innerText = today.toLocaleDateString('en-US', options);
         
-        const quoteIndex = today.getDate() % tateQuotes.length;
-        document.getElementById('mainMotivationalQuote').innerText = tateQuotes[quoteIndex];
+        const dateEl = document.getElementById('currentDateDisplay');
+        const quoteEl = document.getElementById('mainMotivationalQuote');
+        
+        if(dateEl) dateEl.innerText = today.toLocaleDateString('en-US', options);
+        if(quoteEl) {
+            const quoteIndex = today.getDate() % tateQuotes.length;
+            quoteEl.innerText = tateQuotes[quoteIndex];
+        }
     }
 
     function runEnergyFormula() {
-        const selectVal = document.getElementById('energySelect').value;
+        const selectEl = document.getElementById('energySelect');
+        if (!selectEl) return;
+        
+        const selectVal = selectEl.value;
         controlData.energyLevel = selectVal;
-        localStorage.setItem('notion_energy_calc_safe', JSON.stringify(controlData));
+        
+        try {
+            localStorage.setItem('notion_energy_calc_safe_v3', JSON.stringify(controlData));
+        } catch(e) {}
 
         let textOutput = "";
-
         if (selectVal === "💤 Low Energy") {
             textOutput = "🫶 Just 1 thing today. That's a full day. Breathe.";
         } else if (selectVal === "💡 Manageable") {
             textOutput = "✨ You've got room for your Top 3. Let's do this!";
-        } else if (selectVal === "⚡️ High Energy") {
-            textOutput = "⚡ Focus on your Top 1-2 items. Let the rest slide.";
-        } else if (selectVal === "🔋 Unstoppable") {
-            textOutput = "🔥 Destroyer mode. Crush every single goal today.";
-        } else {
-            textOutput = "☕ Select your Energy Level to get today's guidance.";
-        }
-
-        document.getElementById('formulaGuidanceDisplay').innerText = textOutput;
-    }
-
-    function renderControlState() {
-        localStorage.setItem('notion_energy_calc_safe', JSON.stringify(controlData));
-        
-        document.getElementById('energySelect').value = controlData.energyLevel;
-        document.getElementById('streakNumberDisplay').innerText = controlData.streak;
-        document.getElementById('streakTextDisplay').innerText = `${controlData.streak} days in a row! Momentum is gathering.`;
-        runEnergyFormula();
-    }
-
-    function logStreakDay() {
-        controlData.streak++;
-        localStorage.setItem('notion_energy_calc_safe', JSON.stringify(controlData));
-        renderControlState();
-        cancelResetState(); // Clear reset prompt if logging days
-    }
-
-    // Two-Click safety confirmation system designed natively to work inside Notion frames
-    function resetStreakNotionSafe() {
-        const btn = document.getElementById('resetBtn');
-        
-        if (!isConfirmingReset) {
