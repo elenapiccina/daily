@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -232,25 +232,17 @@
         const today = new Date();
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         
-        const dateEl = document.getElementById('currentDateDisplay');
-        const quoteEl = document.getElementById('mainMotivationalQuote');
-        
-        if(dateEl) dateEl.innerText = today.toLocaleDateString('en-US', options);
-        if(quoteEl) {
-            const quoteIndex = today.getDate() % tateQuotes.length;
-            quoteEl.innerText = tateQuotes[quoteIndex];
-        }
+        document.getElementById('currentDateDisplay').innerText = today.toLocaleDateString('en-US', options);
+        const quoteIndex = today.getDate() % tateQuotes.length;
+        document.getElementById('mainMotivationalQuote').innerText = tateQuotes[quoteIndex];
     }
 
     function runEnergyFormula() {
-        const selectEl = document.getElementById('energySelect');
-        if (!selectEl) return;
-        
-        const selectVal = selectEl.value;
+        const selectVal = document.getElementById('energySelect').value;
         controlData.energyLevel = selectVal;
         
         try {
-            localStorage.setItem('notion_energy_calc_safe_v3', JSON.stringify(controlData));
+            localStorage.setItem('notion_energy_calc_direct_v4', JSON.stringify(controlData));
         } catch(e) {}
 
         let textOutput = "";
@@ -258,3 +250,6 @@
             textOutput = "🫶 Just 1 thing today. That's a full day. Breathe.";
         } else if (selectVal === "💡 Manageable") {
             textOutput = "✨ You've got room for your Top 3. Let's do this!";
+        } else if (selectVal === "⚡️ High Energy") {
+            textOutput = "⚡ Focus on your Top 1-2 items. Let the rest slide.";
+        } else if (selectVal === "🔋 Unstoppable") {
