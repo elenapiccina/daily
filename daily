@@ -1,0 +1,275 @@
+This is a powerful aesthetic layout for your workspace dashboard! We can build your Daily Control Center widget card to look exactly like your image using a clean, editorial serif typography structure.
+## 🌸 What this widget includes:
+
+* 📆 Dynamic Real-Time Date: Automatically tracks and displays the correct current date on your page.
+* ⚡ Energy Level Dropdown Selector: An interactive selector box where you can toggle your morning mindset (Manageable, High Energy, Low Energy, Unstoppable).
+* 🌱 Interactive Streak Counter Box: A satisfying counter button that tracks your current habit routine streak days with visual feedback.
+* 🔥 Dynamic Andrew Tate Motivation Quotes: A curated collection of success quotes that automatically switches to a fresh, powerful quote every single calendar day to keep you focused.
+
+We will keep it separate from your other setup files by hosting it in a brand-new repository folder called control.
+------------------------------
+## 🎨 The Daily Control Center Widget Code
+Copy this complete code block:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Control Center 🌸</title>
+    <style>
+        :root {
+            --text-dark: #2C2526;
+            --text-muted: #746264;
+            --accent-green: #e1efe3;
+            --text-green: #386b42;
+            --accent-pink: #fdebee;
+            --text-pink: #9e2a4b;
+            --bg-card: #ffffff;
+            --border-light: #efeae4;
+        }
+
+        body {
+            font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 8px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Outer card frame matching your screenshot structure precisely */
+        .widget-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 24px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
+        }
+
+        .header-title {
+            font-size: 1.3rem;
+            font-weight: normal;
+            letter-spacing: 1px;
+            color: var(--text-dark);
+            margin: 0 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Meta status row matching screenshot layout */
+        .meta-status-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Dropdown selector styled like a native tag chip */
+        .energy-select-wrapper {
+            position: relative;
+        }
+
+        select {
+            font-family: inherit;
+            font-size: 0.85rem;
+            background-color: #f3f3F3;
+            color: var(--text-dark);
+            border: none;
+            border-radius: 6px;
+            padding: 4px 8px;
+            cursor: pointer;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            padding-right: 18px;
+        }
+
+        .energy-select-wrapper::after {
+            content: "▾";
+            position: absolute;
+            right: 6px;
+            top: 2px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .date-display {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        /* Block text quotes containers */
+        .quote-block-green {
+            background-color: var(--accent-green);
+            color: var(--text-green);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .quote-block-pink {
+            background-color: var(--accent-pink);
+            color: var(--text-pink);
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+
+        /* Interactive Counter Row Layout at base */
+        .streak-footer-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            border-top: 1px solid #f9f6f2;
+            padding-top: 14px;
+        }
+
+        .streak-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-streak-increment {
+            background: none;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            color: var(--text-dark);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            transition: background 0.2s;
+        }
+        .btn-streak-increment:hover { background: #fafafa; }
+    </style>
+</head>
+<body>
+
+<div class="widget-container">
+    <h1 class="header-title">🌸 DAILY CONTROL CENTER</h1>
+
+    <div class="meta-status-row">
+        <div class="energy-select-wrapper">
+            <select id="energySelect" onchange="saveEnergyLevel()">
+                <option value="💡 Manageable">☀️ Manageable</option>
+                <option value="⚡️ High Energy">⚡️ High Energy</option>
+                <option value="🔋 Unstoppable">🔋 Unstoppable</option>
+                <option value="💤 Low Energy">💤 Low Energy</option>
+            </select>
+        </div>
+        <div class="date-display" id="currentDateDisplay">September 2, 2026</div>
+    </div>
+
+    <!-- Curated Tate Daily Success Matrix blocks -->
+    <div class="quote-block-green" id="mainMotivationalQuote">
+        👁 Close your eyes. Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.
+    </div>
+
+    <div class="quote-block-pink">
+        ✨ You've got room for your Top 3. Let's do this!
+    </div>
+
+    <!-- Active Streak Configuration Engine Footer -->
+    <div class="streak-footer-row">
+        <div class="streak-info">
+            <span id="streakNumberDisplay" style="font-weight: bold; color: var(--text-dark);">0</span> 
+            <span>🌱</span> 
+            <span id="streakTextDisplay">0 days in a row! Momentum is gathering.</span>
+        </div>
+        <button class="btn-streak-increment" onclick="logStreakDay()">+ log day</button>
+    </div>
+</div>
+
+<script>
+    // Extensive rotating database list of success quotes
+    const tateQuotes = [
+        "👁 Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.",
+        "👁 Success is not accidental. It is a reward for showing up every single day when everyone else quit.",
+        "👁 High absolute discipline beats temporary fleeting motivation every single time. Build your mind.",
+        "👁 Cost of regret is far heavier than the price of daily hard work. Get up and execute your plan.",
+        "👁 True power is controlling your focus when distractions are begging for your attention.",
+        "👁 Close your eyes and realize nobody is coming to save you. You must build your own empire.",
+        "👁 Real routine momentum gathers when you stop negotiating with your own lazy thoughts."
+    ];
+
+    let controlData = JSON.parse(localStorage.getItem('notion_control_center_v1')) || {
+        energy: "💡 Manageable",
+        streak: 0
+    };
+
+    function setLiveWidgetDate() {
+        const today = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDateDisplay').innerText = today.toLocaleDateString('en-US', options);
+        
+        // Pick custom quote rotation index safely using current day number index loops
+        const quoteIndex = today.getDate() % tateQuotes.length;
+        document.getElementById('mainMotivationalQuote').innerText = tateQuotes[quoteIndex];
+    }
+
+    function renderControlState() {
+        localStorage.setItem('notion_control_center_v1', JSON.stringify(controlData));
+        
+        document.getElementById('energySelect').value = controlData.energy;
+        document.getElementById('streakNumberDisplay').innerText = controlData.streak;
+        document.getElementById('streakTextDisplay').innerText = `${controlData.streak} days in a row! Momentum is gathering.`;
+    }
+
+    function saveEnergyLevel() {
+        controlData.energy = document.getElementById('energySelect').value;
+        renderControlState();
+    }
+
+    function logStreakDay() {
+        controlData.streak++;
+        renderControlState();
+    }
+
+    // Master clear option to trigger array state flush reset helper if needed
+    window.addEventListener('dblclick', function(e) {
+        if(e.target.tagName !== 'SELECT' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+
+if(confirm("Reset streak counter stats back to 0?")) {
+controlData.streak = 0;
+renderControlState();
+}
+}
+});
+setLiveWidgetDate();
+renderControlState();
+
+
+---
+
+### 🚀 Setup Steps:
+1. Tap the **GitHub logo** in the top left corner of your browser screen.
+2. Click the green **`[ 🟩 New ]`** button on the left sidebar profile directory tab.
+3. Name your repository exactly: **`control`** and click *Create repository*.
+4. On the empty setup dashboard page, tap the blue link text that says **`creating a new file`**.
+5. Name your code file: **`index.html`**
+6. Paste the code block above inside it and click **`Commit changes...`** to save.
+7. Go to **Settings** > **Pages** > change the branch dropdown menu configuration to **`main`** > click **`Save`**.
+
+Your new live link will be ready right here:
+👉 **`https://github.io`**
+
+Drop that link straight into Notion using **`/embed`**, grab the sidebar handles to adjust the box width, and your personalized **Control Center Dashboard** will lock cleanly onto your dashboard screen panels!
+
+Let me know if the **dropdown menu selections and "+ log day" counter button** store your configurations perfectly!
+
+
