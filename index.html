@@ -1,16 +1,3 @@
-This is a powerful aesthetic layout for your workspace dashboard! We can build your Daily Control Center widget card to look exactly like your image using a clean, editorial serif typography structure.
-## 🌸 What this widget includes:
-
-* 📆 Dynamic Real-Time Date: Automatically tracks and displays the correct current date on your page.
-* ⚡ Energy Level Dropdown Selector: An interactive selector box where you can toggle your morning mindset (Manageable, High Energy, Low Energy, Unstoppable).
-* 🌱 Interactive Streak Counter Box: A satisfying counter button that tracks your current habit routine streak days with visual feedback.
-* 🔥 Dynamic Andrew Tate Motivation Quotes: A curated collection of success quotes that automatically switches to a fresh, powerful quote every single calendar day to keep you focused.
-
-We will keep it separate from your other setup files by hosting it in a brand-new repository folder called control.
-------------------------------
-## 🎨 The Daily Control Center Widget Code
-Copy this complete code block:
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +25,6 @@ Copy this complete code block:
             justify-content: center;
         }
 
-        /* Outer card frame matching your screenshot structure precisely */
         .widget-container {
             width: 100%;
             max-width: 480px;
@@ -61,7 +47,6 @@ Copy this complete code block:
             gap: 8px;
         }
 
-        /* Meta status row matching screenshot layout */
         .meta-status-row {
             display: flex;
             align-items: center;
@@ -70,7 +55,6 @@ Copy this complete code block:
             flex-wrap: wrap;
         }
 
-        /* Dropdown selector styled like a native tag chip */
         .energy-select-wrapper {
             position: relative;
         }
@@ -78,14 +62,13 @@ Copy this complete code block:
         select {
             font-family: inherit;
             font-size: 0.85rem;
-            background-color: #f3f3F3;
+            background-color: #f3f3f3;
             color: var(--text-dark);
             border: none;
             border-radius: 6px;
             padding: 4px 8px;
             cursor: pointer;
             outline: none;
-            -webkit-appearance: none;
             appearance: none;
             padding-right: 18px;
         }
@@ -105,11 +88,10 @@ Copy this complete code block:
             color: var(--text-dark);
         }
 
-        /* Block text quotes containers */
         .quote-block-green {
             background-color: var(--accent-green);
             color: var(--text-green);
-            padding: 10px 14px;
+            padding: 14px;
             border-radius: 6px;
             font-size: 0.95rem;
             line-height: 1.4;
@@ -120,28 +102,31 @@ Copy this complete code block:
         .quote-block-pink {
             background-color: var(--accent-pink);
             color: var(--text-pink);
-            padding: 10px 14px;
+            padding: 14px;
             border-radius: 6px;
             font-size: 0.95rem;
             line-height: 1.4;
             margin-bottom: 20px;
         }
 
-        /* Interactive Counter Row Layout at base */
+        /* Fixed wide-align layout matrix row at the base */
         .streak-footer-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.95rem;
-            color: var(--text-muted);
+            gap: 12px;
             border-top: 1px solid #f9f6f2;
             padding-top: 14px;
+            width: 100%;
         }
 
         .streak-info {
             display: flex;
             align-items: center;
             gap: 6px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            white-space: nowrap; /* Prevents text splitting into multiple lines */
         }
 
         .btn-streak-increment {
@@ -152,10 +137,11 @@ Copy this complete code block:
             cursor: pointer;
             font-family: inherit;
             font-size: 0.8rem;
-            padding: 2px 8px;
-            transition: background 0.2s;
+            padding: 4px 10px;
+            white-space: nowrap; /* Keeps button text on one unified block */
+            background-color: #ffffff;
         }
-        .btn-streak-increment:hover { background: #fafafa; }
+        .btn-streak-increment:hover { background: #fafafa; border-color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -175,7 +161,6 @@ Copy this complete code block:
         <div class="date-display" id="currentDateDisplay">September 2, 2026</div>
     </div>
 
-    <!-- Curated Tate Daily Success Matrix blocks -->
     <div class="quote-block-green" id="mainMotivationalQuote">
         👁 Close your eyes. Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.
     </div>
@@ -184,7 +169,6 @@ Copy this complete code block:
         ✨ You've got room for your Top 3. Let's do this!
     </div>
 
-    <!-- Active Streak Configuration Engine Footer -->
     <div class="streak-footer-row">
         <div class="streak-info">
             <span id="streakNumberDisplay" style="font-weight: bold; color: var(--text-dark);">0</span> 
@@ -196,7 +180,6 @@ Copy this complete code block:
 </div>
 
 <script>
-    // Extensive rotating database list of success quotes
     const tateQuotes = [
         "👁 Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.",
         "👁 Success is not accidental. It is a reward for showing up every single day when everyone else quit.",
@@ -207,7 +190,7 @@ Copy this complete code block:
         "👁 Real routine momentum gathers when you stop negotiating with your own lazy thoughts."
     ];
 
-    let controlData = JSON.parse(localStorage.getItem('notion_control_center_v1')) || {
+    let controlData = JSON.parse(localStorage.getItem('notion_control_center_fixed')) || {
         energy: "💡 Manageable",
         streak: 0
     };
@@ -217,13 +200,12 @@ Copy this complete code block:
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('currentDateDisplay').innerText = today.toLocaleDateString('en-US', options);
         
-        // Pick custom quote rotation index safely using current day number index loops
         const quoteIndex = today.getDate() % tateQuotes.length;
         document.getElementById('mainMotivationalQuote').innerText = tateQuotes[quoteIndex];
     }
 
     function renderControlState() {
-        localStorage.setItem('notion_control_center_v1', JSON.stringify(controlData));
+        localStorage.setItem('notion_control_center_fixed', JSON.stringify(controlData));
         
         document.getElementById('energySelect').value = controlData.energy;
         document.getElementById('streakNumberDisplay').innerText = controlData.streak;
@@ -240,36 +222,18 @@ Copy this complete code block:
         renderControlState();
     }
 
-    // Master clear option to trigger array state flush reset helper if needed
     window.addEventListener('dblclick', function(e) {
-        if(e.target.tagName !== 'SELECT' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+        if(e.target.tagName !== 'SELECT' && e.target.tagName !== 'BUTTON') {
+            if(confirm("Reset streak counter stats back to 0?")) {
+                controlData.streak = 0;
+                renderControlState();
+            }
+        }
+    });
 
-if(confirm("Reset streak counter stats back to 0?")) {
-controlData.streak = 0;
-renderControlState();
-}
-}
-});
-setLiveWidgetDate();
-renderControlState();
+    setLiveWidgetDate();
+    renderControlState();
+</script>
 
-
----
-
-### 🚀 Setup Steps:
-1. Tap the **GitHub logo** in the top left corner of your browser screen.
-2. Click the green **`[ 🟩 New ]`** button on the left sidebar profile directory tab.
-3. Name your repository exactly: **`control`** and click *Create repository*.
-4. On the empty setup dashboard page, tap the blue link text that says **`creating a new file`**.
-5. Name your code file: **`index.html`**
-6. Paste the code block above inside it and click **`Commit changes...`** to save.
-7. Go to **Settings** > **Pages** > change the branch dropdown menu configuration to **`main`** > click **`Save`**.
-
-Your new live link will be ready right here:
-👉 **`https://github.io`**
-
-Drop that link straight into Notion using **`/embed`**, grab the sidebar handles to adjust the box width, and your personalized **Control Center Dashboard** will lock cleanly onto your dashboard screen panels!
-
-Let me know if the **dropdown menu selections and "+ log day" counter button** store your configurations perfectly!
-
-
+</body>
+</html>
