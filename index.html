@@ -4,283 +4,550 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Control Center 🌸</title>
+    
+    <!-- Google Fonts Import for Alice Serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --text-dark: #2C2526;
-            --text-muted: #746264;
-            --accent-green: #e1efe3;
-            --text-green: #386b42;
-            --accent-pink: #fdebee;
-            --text-pink: #9e2a4b;
-            --bg-card: #ffffff;
-            --border-light: #efeae4;
+            --glass-bg: rgba(255, 255, 255, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.85);
+            --glass-shadow: 0 10px 32px rgba(160, 150, 165, 0.08), 0 2px 8px rgba(0, 0, 0, 0.03);
+            --text-dark: #231F20;
+            --text-subtle: #685E60;
+            --mint-quote-bg: #DEEBE7;
+            --mint-quote-text: #1C2E26; /* Deep charcoal dark forest tone for high visibility */
+            --mint-quote-border: rgba(255, 255, 255, 0.75);
+            --pink-guidance-bg: #F8E2E7;
+            --pink-guidance-text: #80233C; /* Rich deep berry for legibility */
+            --pink-guidance-border: rgba(255, 255, 255, 0.75);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: Georgia, Cambria, "Times New Roman", Times, serif;
-            background-color: transparent;
-            margin: 0;
-            padding: 4px;
+            font-family: 'Alice', Georgia, serif;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
+            align-items: center;
+            padding: 12px;
+            background: linear-gradient(135deg, #F9F6F0 0%, #F3ECE7 50%, #EBF0EC 100%);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .widget-container {
-            width: 100%;
-            max-width: 440px;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            padding: 16px;
-            box-sizing: border-box;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
+        /* Soft ambient gradient orb behind the glass widget for realistic frosted refraction */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(222, 235, 231, 0.7) 0%, rgba(248, 226, 231, 0.5) 70%, rgba(255, 255, 255, 0) 100%);
+            top: 15%;
+            left: 20%;
+            filter: blur(40px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .glass-widget-card {
             position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 380px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .glass-widget-card:hover {
+            box-shadow: 0 12px 36px rgba(150, 140, 155, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
         }
 
         .header-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid rgba(220, 212, 205, 0.4);
+            padding-bottom: 8px;
             margin-bottom: 12px;
-            border-bottom: 1px solid #F6F2EE;
-            padding-bottom: 6px;
         }
 
         .header-title {
+            font-family: 'Alice', serif;
             font-size: 1.05rem;
-            font-weight: bold;
-            letter-spacing: 0.5px;
+            font-weight: 400; /* Light thin font feel */
+            letter-spacing: 0.2px;
             color: var(--text-dark);
-            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .meta-status-row {
+        .flower-icon {
+            font-size: 0.95rem;
+            display: inline-block;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .glass-widget-card:hover .flower-icon {
+            transform: rotate(20deg) scale(1.15);
+        }
+
+        .meta-row {
             display: flex;
+            justify-content: space-between;
             align-items: center;
             gap: 10px;
             margin-bottom: 12px;
             flex-wrap: wrap;
         }
 
-        .energy-select-wrapper {
+        .select-wrapper {
             position: relative;
+            display: inline-block;
         }
 
         select {
-            font-family: inherit;
+            font-family: 'Alice', serif;
             font-size: 0.8rem;
-            background-color: #f5f5f5;
+            background: rgba(255, 255, 255, 0.75);
             color: var(--text-dark);
-            border: none;
-            border-radius: 6px;
-            padding: 4px 18px 4px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 9px;
+            padding: 5px 24px 5px 10px;
             cursor: pointer;
             outline: none;
             appearance: none;
-            font-weight: 500;
+            -webkit-appearance: none;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s ease;
         }
 
-        .energy-select-wrapper::after {
+        select:hover, select:focus {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(210, 200, 195, 0.6);
+        }
+
+        .select-wrapper::after {
             content: "▾";
             position: absolute;
-            right: 6px;
-            top: 2px;
-            font-size: 0.7rem;
-            color: var(--text-muted);
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.65rem;
+            color: var(--text-subtle);
             pointer-events: none;
         }
 
         .date-display {
-            font-size: 0.85rem;
-            color: var(--text-dark);
+            font-size: 0.82rem;
+            color: var(--text-subtle);
+            letter-spacing: 0.1px;
+            white-space: nowrap;
+            font-weight: 400;
         }
 
-        .quote-block-green {
-            background-color: var(--accent-green);
-            color: var(--text-green);
-            padding: 10px 12px;
-            border-radius: 6px;
-            font-size: 0.88rem;
-            line-height: 1.4;
-            font-weight: bold;
+        .quote-block-mint {
+            background-color: var(--mint-quote-bg);
+            color: var(--mint-quote-text);
+            border: 1px solid var(--mint-quote-border);
+            padding: 11px 13px;
+            border-radius: 11px;
+            font-size: 0.86rem;
+            line-height: 1.45;
             margin-bottom: 10px;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.02);
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
         }
 
-        .quote-block-pink {
-            background-color: var(--accent-pink);
-            color: var(--text-pink);
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 1.15rem; 
-            font-weight: bold; 
+        .quote-icon {
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+            opacity: 0.9;
+        }
+
+        .quote-text {
+            font-weight: 600; /* Extra visibility for clear legibility */
+            letter-spacing: 0.15px;
+        }
+
+        .guidance-block-pink {
+            background-color: var(--pink-guidance-bg);
+            color: var(--pink-guidance-text);
+            border: 1px solid var(--pink-guidance-border);
+            padding: 10px 12px;
+            border-radius: 11px;
+            font-size: 0.84rem;
             line-height: 1.4;
-            margin-bottom: 14px;
             text-align: center;
+            margin-bottom: 14px;
+            font-weight: 500;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.02);
+            transition: all 0.25s ease;
         }
 
-        /* Responsive footer layout that wraps cleanly if screen space is narrow */
-        .streak-footer-row {
+        .footer-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            border-top: 1px solid #f9f6f2;
+            gap: 8px;
+            border-top: 1px solid rgba(220, 212, 205, 0.35);
             padding-top: 10px;
-            width: 100%;
-            flex-wrap: wrap; 
+            flex-wrap: wrap;
         }
 
         .streak-info {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            gap: 5px;
+            font-size: 0.8rem;
+            color: var(--text-subtle);
         }
 
-        .action-btns-group {
+        .streak-badge {
+            font-weight: 600;
+            color: var(--text-dark);
+            background: rgba(255, 255, 255, 0.85);
+            padding: 2px 7px;
+            border-radius: 7px;
+            font-size: 0.82rem;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .actions-group {
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .btn-streak-increment {
-            background: none;
-            border: 1px solid var(--border-light);
-            border-radius: 6px;
+        button {
+            font-family: 'Alice', serif;
+            font-size: 0.78rem;
+            border: 1px solid rgba(220, 212, 205, 0.7);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.85);
             color: var(--text-dark);
             cursor: pointer;
-            font-family: inherit;
-            font-size: 0.78rem;
-            padding: 3px 8px;
-            white-space: nowrap;
-            background-color: #ffffff;
-        }
-        .btn-streak-increment:hover { background: #fafafa; border-color: var(--text-muted); }
-
-        .btn-reset-icon {
-            background: none;
-            border: 1px solid var(--border-light);
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.78rem;
-            padding: 3px 6px;
-            background-color: #ffffff;
-            display: flex;
+            padding: 4px 10px;
+            transition: all 0.2s ease;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            transition: all 0.15s ease;
+            gap: 4px;
+            outline: none;
+            user-select: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
         }
-        .btn-reset-icon:hover { background: #fdf2f4; border-color: var(--text-pink); }
-        .btn-reset-icon.confirm-state { background-color: #ffebee; border-color: #ef5350; font-size: 0.72rem; padding: 3px 6px; color: #c62828; font-weight: bold; }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.98);
+            border-color: rgba(180, 170, 165, 0.8);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-log {
+            color: #264A31;
+            background: rgba(230, 243, 235, 0.85);
+            border-color: rgba(190, 215, 200, 0.8);
+            font-weight: 500;
+        }
+
+        .btn-log:hover {
+            background: rgba(218, 238, 226, 0.95);
+            border-color: rgba(160, 195, 175, 0.9);
+        }
+
+        .btn-reset {
+            color: var(--text-subtle);
+            padding: 4px 8px;
+        }
+
+        .btn-reset.confirming {
+            background-color: #FDF2F4;
+            border-color: #F3C4CD;
+            color: #80233C;
+            font-weight: 600;
+        }
+
+        /* Toast Feedback Overlay */
+        .toast-msg {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(35, 31, 32, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #ffffff;
+            font-size: 0.72rem;
+            padding: 4px 12px;
+            border-radius: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+            bottom: -24px;
+        }
     </style>
 </head>
 <body>
 
-<div class="widget-container">
+<div class="glass-widget-card">
+    <!-- Header -->
     <div class="header-row">
-        <h1 class="header-title">🌸 CONTROL CENTER</h1>
+        <h1 class="header-title">
+            Daily Control Center <span class="flower-icon">🌸</span>
+        </h1>
     </div>
 
-    <div class="meta-status-row">
-        <div class="energy-select-wrapper">
-            <select id="energySelect" onchange="runEnergyFormula()">
-                <option value="💡 Manageable">☀️ Manageable</option>
-                <option value="⚡️ High Energy">⚡️ High Energy</option>
-                <option value="🔋 Unstoppable">🔋 Unstoppable</option>
-                <option value="💤 Low Energy">💤 Low Energy</option>
+    <!-- Energy Selector & Date Display (No Day of Week) -->
+    <div class="meta-row">
+        <div class="select-wrapper">
+            <select id="energySelect" onchange="handleEnergyChange()">
+                <option value="manageable">💡 Manageable</option>
+                <option value="high">⚡️ High Energy</option>
+                <option value="unstoppable">🔋 Unstoppable</option>
+                <option value="low">💤 Low Energy</option>
             </select>
         </div>
-        <div class="date-display" id="currentDateDisplay">Tuesday, September 8, 2026</div>
+        <div class="date-display" id="dateDisplay">Sep 10, 2026</div>
     </div>
 
-    <div class="quote-block-green" id="mainMotivationalQuote">
-        👁 Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.
+    <!-- Daily Motivational Quote (#DEEBE7 Background with High Visibility Text) -->
+    <div class="quote-block-mint">
+        <span class="quote-icon">✨</span>
+        <span class="quote-text" id="quoteDisplay">Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.</span>
     </div>
 
-    <div class="quote-block-pink" id="formulaGuidanceDisplay">
-        ✨ You've got room for your Top 3. Let's do this!
+    <!-- Dynamic Energy Guidance Block (#F8E2E7) -->
+    <div class="guidance-block-pink" id="guidanceDisplay">
+        ✨ You've got room for 2-3 key tasks. Take it easy!
     </div>
 
-    <div class="streak-footer-row">
+    <!-- Streak Tracker & Action Buttons -->
+    <div class="footer-row">
         <div class="streak-info">
-            <span id="streakNumberDisplay" style="font-weight: bold; color: var(--text-dark);">0</span> 
-            <span>🌱</span> 
-            <span id="streakTextDisplay">0 days in a row! Momentum is gathering.</span>
+            <span class="streak-badge" id="streakCount">0</span>
+            <span>🌱</span>
+            <span id="streakMessage">0 days in a row</span>
         </div>
-        <div class="action-btns-group">
-            <button class="btn-streak-increment" onclick="logStreakDay()">+ log day</button>
-            <!-- Safe two-click reset prompt designed natively for Notion iframe environments -->
-            <button class="btn-reset-icon" id="resetBtn" onclick="resetStreakNotionSafe()" title="Reset counter">🔄</button>
+        <div class="actions-group">
+            <button class="btn-log" id="logBtn" onclick="logStreakDay()">
+                + log day
+            </button>
+            <button class="btn-reset" id="resetBtn" onclick="handleResetClick()" title="Reset Streak">
+                🔄 reset
+            </button>
         </div>
     </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-msg" id="toastMsg">Logged for today! ✨</div>
 </div>
 
 <script>
-    const tateQuotes = [
-        "👁 Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.",
-        "👁 Success is not accidental. It is a reward for showing up every single day when everyone else quit.",
-        "👁 High absolute discipline beats temporary fleeting motivation every single time. Build your mind.",
-        "👁 Cost of regret is far heavier than the price of daily hard work. Get up and execute your plan.",
-        "👁 True power is controlling your focus when distractions are begging for your attention.",
-        "👁 Close your eyes and realize nobody is coming to save you. You must build your own empire.",
-        "👁 Real routine momentum gathers when you stop negotiating with your own lazy thoughts."
+    // Curated quotes for daily rotation
+    const MOTIVATIONAL_QUOTES = [
+        "Success is not accidental. It is a reward for showing up every single day.",
+        "High discipline beats temporary motivation every single time. Build your mind.",
+        "The cost of regret is far heavier than the price of daily small actions. Execute smoothly.",
+        "True power is controlling your focus when distractions beg for attention.",
+        "Real routine momentum gathers when you stop negotiating with lazy thoughts.",
+        "Small daily victories compounded over time create extraordinary life results."
+      "The number one thing that tells me if a man's going to be successful is his stress tolerance. You are not going to have a big life without big problems." 
+ "Men should adopt the mindset that absolutely everything that happens to them is completely and utterly their fault, whether it's good or bad." 
+"90% of success is going through stress, pain, torment, and bullst."
+ "Emotional control isn't a lack of emotion; it's a necessary function of maturity." 
+ "A man without a vision for his future always returns to his past." 
+"⚡Discipline is the key to success. Absolutely is. If you cannot force yourself to do something that you do not want to do, how are you ever gonna put yourself through the suffering required for greatness?"
+ "Action always wins over excuses."
+ "Today you can act as an amateur or you can be a professional. Decide what you will do right now."
+ "Everything you want is on the other side of hard work."
+
     ];
 
-    let controlData = JSON.parse(localStorage.getItem('notion_control_final_v10')) || {
-        energyLevel: "💡 Manageable",
-        streak: 0
+    // Dynamic guidance formula mapping based on selected energy level
+    const ENERGY_GUIDANCE = {
+        low: "🌱 Rest first! Focus on just 1 micro-task today.",
+        manageable: "✨ You've got room for 2-3 key tasks. Take it easy!",
+        high: "🚀 You've got room for your Top 3. Let's do this!",
+        unstoppable: "🔥 Power mode on! Crushing your Top 3+ with ease."
     };
 
-    let isConfirmingReset = false;
+    const STORAGE_KEY = 'notion_control_glass_v1';
 
-    function setLiveWidgetDate() {
-        const today = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('currentDateDisplay').innerText = today.toLocaleDateString('en-US', options);
-        
-        const quoteIndex = today.getDate() % tateQuotes.length;
-        document.getElementById('mainMotivationalQuote').innerText = tateQuotes[quoteIndex];
+    // Application State
+    let appState = {
+        energy: 'manageable',
+        streak: 0,
+        lastLoggedDate: ''
+    };
+
+    let resetConfirmationTimeout = null;
+
+    function loadState() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                appState = { ...appState, ...parsed };
+            }
+        } catch (e) {
+            console.warn("LocalStorage unavailable in iframe sandbox environment. Fallback to memory.", e);
+        }
     }
 
-    function runEnergyFormula() {
-        const selectVal = document.getElementById('energySelect').value;
-        controlData.energyLevel = selectVal;
-        localStorage.setItem('notion_control_final_v10', JSON.stringify(controlData));
+    function saveState() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        } catch (e) {
+            console.warn("LocalStorage save failed.", e);
+        }
+    }
 
-        let textOutput = "";
-        if (selectVal === "💤 Low Energy") {
-            textOutput = "🫶 Just 1 thing today. That's a full day. Breathe.";
-        } else if (selectVal === "💡 Manageable") {
-            textOutput = "✨ You've got room for your Top 3. Let's do this!";
-        } else if (selectVal === "⚡️ High Energy") {
-            textOutput = "⚡ Focus on your Top 1-2 items. Let the rest slide.";
-        } else if (selectVal === "🔋 Unstoppable") {
-            textOutput = "🔥 Destroyer mode. Crush every single goal today.";
+    // Returns date string formatted without weekday (e.g. "September 10, 2026")
+    function getFormattedDate(dateObj = new Date()) {
+        const options = { month: 'long', day: 'numeric', year: 'numeric' };
+        return dateObj.toLocaleDateString('en-US', options);
+    }
+
+    // Returns YYYY-MM-DD key for streak uniqueness check
+    function getDateKey(dateObj = new Date()) {
+        const y = dateObj.getFullYear();
+        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const d = String(dateObj.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+
+    function initWidget() {
+        loadState();
+
+        // 1. Set Date Display without Weekday Name
+        const today = new Date();
+        document.getElementById('dateDisplay').innerText = getFormattedDate(today);
+
+        // 2. Set Daily Rotating Quote
+        const quoteIndex = today.getDate() % MOTIVATIONAL_QUOTES.length;
+        document.getElementById('quoteDisplay').innerText = MOTIVATIONAL_QUOTES[quoteIndex];
+
+        // 3. Set Energy Dropdown & Dynamic Pink Guidance Block
+        const selectElem = document.getElementById('energySelect');
+        selectElem.value = appState.energy || 'manageable';
+        updateGuidanceDisplay(appState.energy);
+
+        // 4. Update Streak Counter & Log Button UI
+        updateStreakUI();
+    }
+
+    function handleEnergyChange() {
+        const selectedValue = document.getElementById('energySelect').value;
+        appState.energy = selectedValue;
+        saveState();
+        updateGuidanceDisplay(selectedValue);
+    }
+
+    function updateGuidanceDisplay(energyKey) {
+        const text = ENERGY_GUIDANCE[energyKey] || ENERGY_GUIDANCE.manageable;
+        document.getElementById('guidanceDisplay').innerText = text;
+    }
+
+    function updateStreakUI() {
+        document.getElementById('streakCount').innerText = appState.streak;
+        
+        const streakMsgElem = document.getElementById('streakMessage');
+        if (appState.streak === 1) {
+            streakMsgElem.innerText = "1 day logged!";
+        } else if (appState.streak > 1) {
+            streakMsgElem.innerText = `${appState.streak} days in a row!`;
+        } else {
+            streakMsgElem.innerText = "0 days in a row";
         }
 
-        document.getElementById('formulaGuidanceDisplay').innerText = textOutput;
-    }
-
-    function renderControlState() {
-        document.getElementById('energySelect').value = controlData.energyLevel;
-        document.getElementById('streakNumberDisplay').innerText = controlData.streak;
-        document.getElementById('streakTextDisplay').innerText = `${controlData.streak} days in a row! Momentum is gathering.`;
-        runEnergyFormula();
+        const logBtn = document.getElementById('logBtn');
+        const todayKey = getDateKey();
+        if (appState.lastLoggedDate === todayKey) {
+            logBtn.style.opacity = '0.75';
+            logBtn.innerText = '✓ logged today';
+        } else {
+            logBtn.style.opacity = '1';
+            logBtn.innerText = '+ log day';
+        }
     }
 
     function logStreakDay() {
-        controlData.streak++;
-        localStorage.setItem('notion_control_final_v10', JSON.stringify(controlData));
-        renderControlState();
-        cancelResetState();
+        const todayKey = getDateKey();
+
+        // Prevent duplicate logs on the exact same date
+        if (appState.lastLoggedDate === todayKey) {
+            showToast("Already logged today! ✨");
+            return;
+        }
+
+        appState.streak += 1;
+        appState.lastLoggedDate = todayKey;
+        saveState();
+
+        updateStreakUI();
+        showToast("Day logged! Keep glowing ✨");
     }
 
-    function resetStreakNotionSafe() {
-        const btn = document.getElementById('resetBtn');
-        if (!btn) return;
-        
-        if (!isConfirmingReset) {
-            isConfirmingReset = true;
-            btn.innerText = "Sure?";
-            btn.classList.add('confirm-state');
+    function handleResetClick() {
+        const resetBtn = document.getElementById('resetBtn');
+
+        if (!resetBtn.classList.contains('confirming')) {
+            // First click: prompt confirmation state
+            resetBtn.classList.add('confirming');
+            resetBtn.innerText = 'Reset?';
+
+            // Auto-revert if not confirmed in 3 seconds
+            resetConfirmationTimeout = setTimeout(() => {
+                revertResetBtn();
+            }, 3000);
+        } else {
+            // Second click: execute streak reset
+            clearTimeout(resetConfirmationTimeout);
+            revertResetBtn();
+
+            appState.streak = 0;
+            appState.lastLoggedDate = '';
+            saveState();
+
+            updateStreakUI();
+            showToast("Streak reset 🔄");
+        }
+    }
+
+    function revertResetBtn() {
+        const resetBtn = document.getElementById('resetBtn');
+        resetBtn.classList.remove('confirming');
+        resetBtn.innerText = '🔄 reset';
+    }
