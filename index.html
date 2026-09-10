@@ -1,5 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Control Center Glass</title>
+
+    <!-- Google Fonts: Alice Serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.88);
+            --glass-shadow: 0 10px 32px rgba(160, 150, 165, 0.08), 0 2px 8px rgba(0, 0, 0, 0.03);
+            --text-dark: #231F20;
+            --text-subtle: #685E60;
+            
+            /* High visibility mint quote block variables */
+            --mint-quote-bg: #DEEBE7;
+            --mint-quote-text: #1B3B32; /* Deep high-contrast dark forest green */
+            --mint-quote-border: rgba(255, 255, 255, 0.8);
+
+            /* Pink guidance block variables */
+            --pink-guidance-bg: #F8E2E7;
+            --pink-guidance-text: #8C2440; /* Rich deep berry pink */
+            --pink-guidance-border: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Alice', Georgia, serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+            background: linear-gradient(135deg, #F9F6F0 0%, #F3ECE7 50%, #EBF0EC 100%);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient soft gradient backdrop blur sphere */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(222, 235, 231, 0.75) 0%, rgba(248, 226, 231, 0.5) 70%, rgba(255, 255, 255, 0) 100%);
+            top: 10%;
+            left: 15%;
+            filter: blur(45px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .glass-widget-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 390px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .glass-widget-card:hover {
+            box-shadow: 0 12px 36px rgba(150, 140, 155, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(220, 212, 205, 0.4);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .header-title {
+            font-family: 'Alice', serif;
+            font-size: 1.05rem;
+            font-weight: 400;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .flower-icon {
+            font-size: 0.95rem;
+            display: inline-block;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .glass-widget-card:hover .flower-icon {
+            transform: rotate(20deg) scale(1.15);
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .select-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        select {
+            font-family: 'Alice', serif;
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.85);
+            color: var(--text-dark);
+            border: 1px solid rgba(255, 255, 255, 0.95);
+            border-radius: 9px;
+            padding: 5px 24px 5px 10px;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s ease;
+        }
+
+        select:hover, select:focus {
+            background: rgba(255, 255, 255, 0.98);
+            border-color: rgba(200, 190, 185, 0.7);
+        }
+
+        .select-wrapper::after {
+            content: "▾";
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.65rem;
+            color: var(--text-subtle);
+            pointer-events: none;
+        }
+
+        .date-display {
+            font-size: 0.82rem;
+            color: var(--text-subtle);
+            letter-spacing: 0.1px;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+
+        .quote-block-mint {
+            background-color: var(--mint-quote-bg);
+            color: var(--mint-quote-text);
+            border: 1px solid var(--mint-quote-border);
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            line-height: 1.45;
+            margin-bottom: 10px;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.02);
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .quote-icon {
+            font-size: 0.88rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+            opacity: 0.9;
+        }
+
+        .quote-text {
+            font-weight: 600; /* Dark high visibility text */
+            letter-spacing: 0.15px;
+        }
+
+        .guidance-block-pink {
+            background-color: var(--pink-guidance-bg);
+            color: var(--pink-guidance-text);
+            border: 1px solid var(--pink-guidance-border);
+            padding: 11px 13px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            text-align: center;
+            margin-bottom: 14px;
+            font-weight: 600;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.02);
+            transition: all 0.25s ease;
+        }
+
+        .footer-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            border-top: 1px solid rgba(220, 212, 205, 0.35);
+            padding-top: 11px;
+            flex-wrap: wrap;
+        }
+
+        .streak-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--text-subtle);
+        }
+
+        .streak-badge {
+            font-weight: 600;
+            color: var(--text-dark);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            border: 1px solid rgba(255, 255, 255, 0.95);
+        }
+
+        .actions-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        button {
+            font-family: 'Alice', serif;
+            font-size: 0.78rem;
+            border: 1px solid rgba(220, 212, 205, 0.7);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.88);
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            outline: none;
+            user-select: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.98);
+            border-color: rgba(180, 170, 165, 0.8);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-log {
+            color: #1F4229;
+            background: rgba(228, 242, 233, 0.9);
+            border-color: rgba(180, 210, 190, 0.85);
+            font-weight: 600;
+        }
+
+        .btn-log:hover {
+            background: rgba(215, 236, 223, 0.98);
+            border-color: rgba(150, 190, 165, 0.95);
+        }
+
+        .btn-reset {
+            color: var(--text-subtle);
+            padding: 5px 8px;
+        }
+
+        .btn-reset.confirming {
+            background-color: #FDF2F4;
+            border-color: #F3C4CD;
+            color: #8C2440;
+            font-weight: 600;
+        }
+
+        .toast-msg {
+            position: absolute;
+            bottom: -32px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(35, 31, 32, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #ffffff;
+            font-size: 0.74rem;
+            padding: 5px 14px;
+            border-radius: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+            bottom: -24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="glass-widget-card">
+    <!-- Header -->
+    <div class="header-row">
+        <h1 class="header-title">
+            DAILY CONTROL CENTER <span class="flower-icon">🌸</span>
+        </h1>
+    </div>
+
+    <!-- Energy Selector & Date Display (No Weekday Name) -->
+    <div class="meta-row">
+        <div class="select-wrapper">
+            <select id="energySelect" onchange="handleEnergyChange()">
+                <option value="manageable">💡 Manageable</option>
+                <option value="high">⚡️ High Energy</option>
+                <option value="unstoppable">🔋 Unstoppable</option>
+                <option value="low">💤 Low Energy</option>
+            </select>
+        </div>
+        <div class="date-display" id="dateDisplay">September 10, 2026</div>
+    </div>
+
+    <!-- Daily Motivational Quote Box (#DEEBE7 Background with Dark #1B3B32 Text) -->
+    <div class="quote-block-mint">
+        <span class="quote-icon">✨</span>
+        <span class="quote-text" id="quoteDisplay">Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.</span>
+    </div>
+
+    <!-- Dynamic Energy Guidance Block (#F8E2E7 Background) -->
+    <div class="guidance-block-pink" id="guidanceDisplay">
+        ✨ Steady focus: you have room for 2 core tasks today.
+    </div>
+
+    <!-- Streak Tracker & Action Buttons -->
+    <div class="footer-row">
+        <div class="streak-info">
+            <span class="streak-badge" id="streakCount">0</span>
+            <span>🌱</span>
+            <span id="streakMessage">0 days in a row</span>
+        </div>
+        <div class="actions-group">
+            <button class="btn-log" id="logBtn" onclick="logStreakDay()">
+                + log day
+            </button>
+            <button class="btn-reset" id="resetBtn" onclick="handleResetClick()" title="Reset Counter">
+                🔄 reset
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Overlay -->
+    <div class="toast-msg" id="toastMsg">Day logged! Keep building. ✨</div>
+</div>
+
 <script>
-    const tateQuotes = [
+    // Curated daily motivational quotes
+    const MOTIVATIONAL_QUOTES = [
         "Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.",
         "Success is not accidental. It is a reward for showing up every single day when everyone else quit.",
         "High absolute discipline beats temporary fleeting motivation every single time. Build your mind.",
@@ -7,195 +388,156 @@
         "True power is controlling your focus when distractions are begging for your attention.",
         "Close your eyes and realize nobody is coming to save you. You must build your own empire.",
         "Real routine momentum gathers when you stop negotiating with your own lazy thoughts."
-      * "The number one thing that tells me if a man's going to be successful is his stress tolerance. You are not going to have a big life without big problems." 
-* "Men should adopt the mindset that absolutely everything that happens to them is completely and utterly their fault, whether it's good or bad." 
-* "90% of success is going through stress, pain, torment, and bullst."
-* "Emotional control isn't a lack of emotion; it's a necessary function of maturity." 
-* "A man without a vision for his future always returns to his past." 
-* "⚡Discipline is the key to success. Absolutely is. If you cannot force yourself to do something that you do not want to do, how are you ever gonna put yourself through the suffering required for greatness?"
-* "Action always wins over excuses."
-* "Today you can act as an amateur or you can be a professional. Decide what you will do right now."
-* "Everything you want is on the other side of hard work."
-
-
     ];
 
-    // Safe local storage reader that won't crash Notion iframes
-    function getStoredData() {
-        try {
-            const data = localStorage.getItem('notion_glass_control_v1');
-            return data ? JSON.parse(data) : null;
-        } catch (e) {
-            console.warn("Storage restricted by browser/iframe:", e);
-            return null;
-        }
-    }
-
-    // Safe local storage writer
-    function saveStoredData(data) {
-        try {
-            localStorage.setItem('notion_glass_control_v1', JSON.stringify(data));
-        } catch (e) {
-            console.warn("Could not save to localStorage (iframe restriction):", e);
-        }
-    }
-
-    let controlData = getStoredData() || {
-        energyLevel: "💡 Manageable",
-        streak: 0,
-        lastLoggedDate: ""
+    // Dynamic guidance mapping based on energy selection
+    const ENERGY_GUIDANCE = {
+        low: "🌱 Low energy day: focus on just 1 micro-task today.",
+        manageable: "✨ Steady focus: you have room for 2 core tasks today.",
+        high: "🚀 High energy! Perfect capacity for your Top 3 priorities.",
+        unstoppable: "🔥 Unstoppable mode! Tackle your Top 3 priorities + 1 stretch goal."
     };
 
-    let isConfirmingReset = false;
+    const STORAGE_KEY = 'notion_control_glass_v2';
 
-    function getFormattedToday() {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
+    // Application state with fallback for blocked iframe storage
+    let appState = {
+        energy: 'manageable',
+        streak: 0,
+        lastLoggedDate: ''
+    };
+
+    let resetTimeout = null;
+
+    // Hardened storage getter wrapped in try-catch to prevent iframe crash in Notion
+    function safeLoadState() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                appState = { ...appState, ...parsed };
+            }
+        } catch (e) {
+            console.warn("Iframe storage restricted by browser settings. Using in-memory fallback state.", e);
+        }
     }
 
-    function setLiveWidgetDate() {
+    // Hardened storage setter wrapped in try-catch
+    function safeSaveState() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        } catch (e) {
+            console.warn("Unable to save state to localStorage inside iframe.", e);
+        }
+    }
+
+    // Format date string without weekday name (e.g., "September 10, 2026")
+    function getFormattedDate(dateObj = new Date()) {
+        const options = { month: 'long', day: 'numeric', year: 'numeric' };
+        return dateObj.toLocaleDateString('en-US', options);
+    }
+
+    // Get YYYY-MM-DD date key for single log per day check
+    function getDateKey(dateObj = new Date()) {
+        const y = dateObj.getFullYear();
+        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const d = String(dateObj.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+
+    function initWidget() {
+        safeLoadState();
+
+        // 1. Set Date Display without Weekday Name
         const today = new Date();
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('currentDateDisplay').innerText = today.toLocaleDateString('en-US', options);
+        document.getElementById('dateDisplay').innerText = getFormattedDate(today);
+
+        // 2. Set Daily Rotating Quote
+        const quoteIndex = today.getDate() % MOTIVATIONAL_QUOTES.length;
+        document.getElementById('quoteDisplay').innerText = MOTIVATIONAL_QUOTES[quoteIndex];
+
+        // 3. Set Dropdown & Guidance Display
+        const selectElem = document.getElementById('energySelect');
+        selectElem.value = appState.energy || 'manageable';
+        updateGuidanceDisplay(appState.energy);
+
+        // 4. Set Streak Counter & Buttons
+        updateStreakUI();
+    }
+
+    function handleEnergyChange() {
+        const selectedValue = document.getElementById('energySelect').value;
+        appState.energy = selectedValue;
+        safeSaveState();
+        updateGuidanceDisplay(selectedValue);
+    }
+
+    function updateGuidanceDisplay(energyKey) {
+        const text = ENERGY_GUIDANCE[energyKey] || ENERGY_GUIDANCE.manageable;
+        document.getElementById('guidanceDisplay').innerText = text;
+    }
+
+    function updateStreakUI() {
+        document.getElementById('streakCount').innerText = appState.streak;
         
-        const quoteIndex = today.getDate() % tateQuotes.length;
-        document.getElementById('mainMotivationalQuote').innerText = tateQuotes[quoteIndex];
-    }
-
-    function runEnergyFormula() {
-        const energySelect = document.getElementById('energySelect');
-        const guidanceDisplay = document.getElementById('formulaGuidanceDisplay');
-        const selectedValue = energySelect.value;
-
-        controlData.energyLevel = selectedValue;
-        saveStoredData(controlData);
-
-        let guidanceText = "";
-        switch(selectedValue) {
-            case "💤 Low Energy":
-                guidanceText = "✨ Low energy day. Focus on just 1 non-negotiable task.";
-                break;
-            case "💡 Manageable":
-                guidanceText = "✨ Steady focus. You have room for 2 core tasks today.";
-                break;
-            case "⚡️ High Energy":
-                guidanceText = "✨ High energy! Perfect capacity for your Top 3 priorities.";
-                break;
-            case "🔋 Unstoppable":
-                guidanceText = "✨ Unstoppable mood! Tackle your Top 3 + 1 bonus stretch goal.";
-                break;
-            default:
-                guidanceText = "✨ Select your current energy level to calculate capacity.";
+        const streakMsgElem = document.getElementById('streakMessage');
+        if (appState.streak === 1) {
+            streakMsgElem.innerText = "1 day logged!";
+        } else if (appState.streak > 1) {
+            streakMsgElem.innerText = `${appState.streak} days in a row!`;
+        } else {
+            streakMsgElem.innerText = "0 days in a row";
         }
 
-        guidanceDisplay.innerText = guidanceText;
+        const logBtn = document.getElementById('logBtn');
+        const todayKey = getDateKey();
+        if (appState.lastLoggedDate === todayKey) {
+            logBtn.style.opacity = '0.75';
+            logBtn.innerText = '✓ logged today';
+        } else {
+            logBtn.style.opacity = '1';
+            logBtn.innerText = '+ log day';
+        }
     }
 
     function logStreakDay() {
-        const todayStr = getFormattedToday();
+        const todayKey = getDateKey();
 
-        if (controlData.lastLoggedDate === todayStr) {
-            showToast("Already logged for today!");
+        if (appState.lastLoggedDate === todayKey) {
+            showToast("Already logged for today! ✨");
             return;
         }
 
-        controlData.streak += 1;
-        controlData.lastLoggedDate = todayStr;
-        saveStoredData(controlData);
+        appState.streak += 1;
+        appState.lastLoggedDate = todayKey;
+        safeSaveState();
 
         updateStreakUI();
-        showToast("Day logged! Keep building.");
-        
-        const resetBtn = document.getElementById('resetBtn');
-        if (isConfirmingReset) {
-            isConfirmingReset = false;
-            resetBtn.classList.remove('confirm-state');
-            resetBtn.innerText = '🔄';
-        }
+        showToast("Day logged! Keep building. ✨");
     }
 
     function handleResetClick() {
         const resetBtn = document.getElementById('resetBtn');
 
-        if (!isConfirmingReset) {
-            isConfirmingReset = true;
-            resetBtn.classList.add('confirm-state');
+        if (!resetBtn.classList.contains('confirming')) {
+            // First click: Ask confirmation
+            resetBtn.classList.add('confirming');
             resetBtn.innerText = 'Confirm Reset?';
-            
-            setTimeout(() => {
-                if (isConfirmingReset) {
-                    isConfirmingReset = false;
-                    resetBtn.classList.remove('confirm-state');
-                    resetBtn.innerText = '🔄';
-                }
-            }, 3000);
+
+            // Auto-revert after 3.5 seconds if unclicked
+            resetTimeout = setTimeout(() => {
+                revertResetBtn();
+            }, 3500);
         } else {
-            controlData.streak = 0;
-            controlData.lastLoggedDate = "";
-            saveStoredData(controlData);
+            // Second click: Perform reset
+            clearTimeout(resetTimeout);
+            revertResetBtn();
+
+            appState.streak = 0;
+            appState.lastLoggedDate = '';
+            safeSaveState();
 
             updateStreakUI();
-            isConfirmingReset = false;
-            resetBtn.classList.remove('confirm-state');
-            resetBtn.innerText = '🔄';
-            showToast("Counter reset to 0.");
+            showToast("Counter reset to 0 🔄");
         }
     }
-
-    function updateStreakUI() {
-        const numDisplay = document.getElementById('streakNumberDisplay');
-        const textDisplay = document.getElementById('streakTextDisplay');
-        
-        numDisplay.innerText = controlData.streak;
-        
-        if (controlData.streak === 1) {
-            textDisplay.innerText = "1 day completed! Great start.";
-        } else {
-            textDisplay.innerText = `${controlData.streak} days in a row! Keep going.`;
-        }
-    }
-
-    function showToast(message) {
-        let toast = document.getElementById('widgetToast');
-        if (!toast) {
-            toast = document.createElement('div');
-            toast.id = 'widgetToast';
-            toast.style.cssText = `
-                position: absolute;
-                bottom: 8px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: #2C2526;
-                color: #ffffff;
-                padding: 4px 12px;
-                border-radius: 12px;
-                font-size: 0.72rem;
-                opacity: 0;
-                transition: opacity 0.25s ease;
-                pointer-events: none;
-                white-space: nowrap;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            `;
-            document.querySelector('.widget-container').appendChild(toast);
-        }
-
-        toast.innerText = message;
-        toast.style.opacity = '1';
-
-        setTimeout(() => {
-            toast.style.opacity = '0';
-        }, 2000);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        setLiveWidgetDate();
-        if (controlData.energyLevel) {
-            document.getElementById('energySelect').value = controlData.energyLevel;
-        }
-        runEnergyFormula();
-        updateStreakUI();
-    });
-</script>
