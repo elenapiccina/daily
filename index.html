@@ -12,21 +12,21 @@
 
     <style>
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-bg: rgba(255, 255, 255, 0.72);
             --glass-border: rgba(255, 255, 255, 0.88);
-            --glass-shadow: 0 10px 32px rgba(160, 150, 165, 0.08), 0 2px 8px rgba(0, 0, 0, 0.03);
+            --glass-shadow: 0 12px 36px rgba(160, 150, 165, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
             --text-dark: #231F20;
             --text-subtle: #685E60;
             
             /* High visibility mint quote block variables */
             --mint-quote-bg: #DEEBE7;
             --mint-quote-text: #1B3B32; /* Deep high-contrast dark forest green */
-            --mint-quote-border: rgba(255, 255, 255, 0.8);
+            --mint-quote-border: rgba(255, 255, 255, 0.85);
 
             /* Pink guidance block variables */
             --pink-guidance-bg: #F8E2E7;
             --pink-guidance-text: #8C2440; /* Rich deep berry pink */
-            --pink-guidance-border: rgba(255, 255, 255, 0.8);
+            --pink-guidance-border: rgba(255, 255, 255, 0.85);
         }
 
         * {
@@ -49,17 +49,17 @@
             overflow-x: hidden;
         }
 
-        /* Ambient soft gradient backdrop blur sphere */
+        /* Ambient soft gradient backdrop sphere for depth */
         body::before {
             content: '';
             position: absolute;
-            width: 280px;
-            height: 280px;
+            width: 300px;
+            height: 300px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(222, 235, 231, 0.75) 0%, rgba(248, 226, 231, 0.5) 70%, rgba(255, 255, 255, 0) 100%);
-            top: 10%;
-            left: 15%;
-            filter: blur(45px);
+            background: radial-gradient(circle, rgba(222, 235, 231, 0.8) 0%, rgba(248, 226, 231, 0.6) 65%, rgba(255, 255, 255, 0) 100%);
+            top: 12%;
+            left: 18%;
+            filter: blur(50px);
             z-index: 0;
             pointer-events: none;
         }
@@ -68,26 +68,26 @@
             position: relative;
             z-index: 1;
             width: 100%;
-            max-width: 390px;
+            max-width: 380px;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-radius: 18px;
-            padding: 18px;
+            border-radius: 20px;
+            padding: 18px 20px;
             box-shadow: var(--glass-shadow);
             transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
         .glass-widget-card:hover {
-            box-shadow: 0 12px 36px rgba(150, 140, 155, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 14px 40px rgba(150, 140, 155, 0.15), 0 4px 12px rgba(0, 0, 0, 0.04);
         }
 
         .header-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(220, 212, 205, 0.4);
+            border-bottom: 1px solid rgba(220, 212, 205, 0.45);
             padding-bottom: 8px;
             margin-bottom: 12px;
         }
@@ -130,8 +130,8 @@
 
         select {
             font-family: 'Alice', serif;
-            font-size: 0.8rem;
-            background: rgba(255, 255, 255, 0.85);
+            font-size: 0.82rem;
+            background: rgba(255, 255, 255, 0.88);
             color: var(--text-dark);
             border: 1px solid rgba(255, 255, 255, 0.95);
             border-radius: 9px;
@@ -140,15 +140,15 @@
             outline: none;
             appearance: none;
             -webkit-appearance: none;
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
             transition: all 0.2s ease;
         }
 
         select:hover, select:focus {
             background: rgba(255, 255, 255, 0.98);
-            border-color: rgba(200, 190, 185, 0.7);
+            border-color: rgba(180, 170, 165, 0.7);
         }
 
         .select-wrapper::after {
@@ -163,9 +163,9 @@
         }
 
         .date-display {
-            font-size: 0.82rem;
-            color: var(--text-subtle);
-            letter-spacing: 0.1px;
+            font-family: 'Alice', serif;
+            font-size: 0.84rem;
+            color: var(--text-dark);
             white-space: nowrap;
             font-weight: 400;
         }
@@ -179,10 +179,11 @@
             font-size: 0.88rem;
             line-height: 1.45;
             margin-bottom: 10px;
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.02);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 2px 6px rgba(0, 0, 0, 0.02);
             display: flex;
             gap: 8px;
             align-items: flex-start;
+            font-weight: 600;
         }
 
         .quote-icon {
@@ -192,23 +193,18 @@
             opacity: 0.9;
         }
 
-        .quote-text {
-            font-weight: 600; /* Dark high visibility text */
-            letter-spacing: 0.15px;
-        }
-
         .guidance-block-pink {
             background-color: var(--pink-guidance-bg);
             color: var(--pink-guidance-text);
             border: 1px solid var(--pink-guidance-border);
             padding: 11px 13px;
             border-radius: 12px;
-            font-size: 0.85rem;
+            font-size: 0.86rem;
             line-height: 1.4;
             text-align: center;
             margin-bottom: 14px;
             font-weight: 600;
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.02);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 2px 6px rgba(0, 0, 0, 0.02);
             transition: all 0.25s ease;
         }
 
@@ -217,7 +213,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 8px;
-            border-top: 1px solid rgba(220, 212, 205, 0.35);
+            border-top: 1px solid rgba(220, 212, 205, 0.4);
             padding-top: 11px;
             flex-wrap: wrap;
         }
@@ -226,7 +222,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: var(--text-subtle);
         }
 
@@ -236,7 +232,7 @@
             background: rgba(255, 255, 255, 0.9);
             padding: 2px 8px;
             border-radius: 8px;
-            font-size: 0.84rem;
+            font-size: 0.85rem;
             border: 1px solid rgba(255, 255, 255, 0.95);
         }
 
@@ -276,7 +272,7 @@
 
         .btn-log {
             color: #1F4229;
-            background: rgba(228, 242, 233, 0.9);
+            background: rgba(228, 242, 233, 0.92);
             border-color: rgba(180, 210, 190, 0.85);
             font-weight: 600;
         }
@@ -307,7 +303,7 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             color: #ffffff;
-            font-size: 0.74rem;
+            font-size: 0.75rem;
             padding: 5px 14px;
             border-radius: 12px;
             opacity: 0;
@@ -329,14 +325,14 @@
     <!-- Header -->
     <div class="header-row">
         <h1 class="header-title">
-            DAILY CONTROL CENTER <span class="flower-icon">🌸</span>
+            🌸 CONTROL CENTER
         </h1>
     </div>
 
     <!-- Energy Selector & Date Display (No Weekday Name) -->
     <div class="meta-row">
         <div class="select-wrapper">
-            <select id="energySelect" onchange="handleEnergyChange()">
+            <select id="energySelect" onchange="window.handleEnergyChange()">
                 <option value="manageable">💡 Manageable</option>
                 <option value="high">⚡️ High Energy</option>
                 <option value="unstoppable">🔋 Unstoppable</option>
@@ -349,12 +345,12 @@
     <!-- Daily Motivational Quote Box (#DEEBE7 Background with Dark #1B3B32 Text) -->
     <div class="quote-block-mint">
         <span class="quote-icon">✨</span>
-        <span class="quote-text" id="quoteDisplay">Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.</span>
+        <span id="quoteDisplay">Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.</span>
     </div>
 
     <!-- Dynamic Energy Guidance Block (#F8E2E7 Background) -->
     <div class="guidance-block-pink" id="guidanceDisplay">
-        ✨ Steady focus: you have room for 2 core tasks today.
+        ✨ Steady focus. You have room for 2 core tasks today.
     </div>
 
     <!-- Streak Tracker & Action Buttons -->
@@ -365,10 +361,10 @@
             <span id="streakMessage">0 days in a row</span>
         </div>
         <div class="actions-group">
-            <button class="btn-log" id="logBtn" onclick="logStreakDay()">
+            <button class="btn-log" id="logBtn" onclick="window.logStreakDay()">
                 + log day
             </button>
-            <button class="btn-reset" id="resetBtn" onclick="handleResetClick()" title="Reset Counter">
+            <button class="btn-reset" id="resetBtn" onclick="window.handleResetClick()" title="Reset Counter">
                 🔄 reset
             </button>
         </div>
@@ -378,8 +374,110 @@
     <div class="toast-msg" id="toastMsg">Day logged! Keep building. ✨</div>
 </div>
 
-<script>
-    // Curated daily motivational quotes
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Application state
+    window.appState = {
+        energy: 'manageable',
+        streak: 0,
+        lastLoggedDate: ''
+    };
+
+    let db = null;
+    let auth = null;
+    let userDocRef = null;
+    let resetTimeout = null;
+
+    // Check Firebase configuration
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'daily-control-glass';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+    const STORAGE_KEY = 'notion_control_glass_v4';
+
+    // Safe LocalStorage Reader
+    function safeLoadLocal() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                window.appState = { ...window.appState, ...parsed };
+            }
+        } catch (e) {
+            console.warn("LocalStorage blocked by iframe sandboxing. Running in-memory state fallback.", e);
+        }
+    }
+
+    // Safe LocalStorage Writer
+    function safeSaveLocal() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(window.appState));
+        } catch (e) {
+            console.warn("Unable to write to LocalStorage in iframe context.", e);
+        }
+    }
+
+    // Save state to Firebase and LocalStorage
+    async function saveState() {
+        safeSaveLocal();
+        if (db && userDocRef && auth?.currentUser) {
+            try {
+                await setDoc(userDocRef, {
+                    energy: window.appState.energy,
+                    streak: window.appState.streak,
+                    lastLoggedDate: window.appState.lastLoggedDate,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+            } catch (err) {
+                console.warn("Firestore save error:", err);
+            }
+        }
+    }
+
+    // Optional Firebase Firestore Init
+    async function initFirebase() {
+        if (!firebaseConfig) return;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            if (initialAuthToken) {
+                await signInWithCustomToken(auth, initialAuthToken);
+            } else {
+                await signInAnonymously(auth);
+            }
+
+            const user = auth.currentUser;
+            if (user) {
+                // Rule 1: Strict paths /artifacts/{appId}/users/{userId}/...
+                userDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'data', 'controlCenter');
+                
+                onSnapshot(userDocRef, (snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.data();
+                        window.appState = { ...window.appState, ...data };
+                        updateUI();
+                    }
+                }, (error) => {
+                    console.warn("Firestore snapshot error:", error);
+                });
+            }
+        } catch (e) {
+            console.warn("Firebase initialization skipped/failed. Using local state.", e);
+        }
+    }
+
+    const ENERGY_GUIDANCE = {
+        low: "✨ Low energy day. Focus on just 1 non-negotiable task.",
+        manageable: "✨ Steady focus. You have room for 2 core tasks today.",
+        high: "✨ High energy! Perfect capacity for your Top 3 priorities.",
+        unstoppable: "✨ Unstoppable mood! Tackle your Top 3 + 1 bonus stretch goal."
+    };
+
     const MOTIVATIONAL_QUOTES = [
         "Focus on making yourself feel excited, powerful. Imagine yourself destroying goals with ease.",
         "Success is not accidental. It is a reward for showing up every single day when everyone else quit.",
@@ -390,54 +488,11 @@
         "Real routine momentum gathers when you stop negotiating with your own lazy thoughts."
     ];
 
-    // Dynamic guidance mapping based on energy selection
-    const ENERGY_GUIDANCE = {
-        low: "🌱 Low energy day: focus on just 1 micro-task today.",
-        manageable: "✨ Steady focus: you have room for 2 core tasks today.",
-        high: "🚀 High energy! Perfect capacity for your Top 3 priorities.",
-        unstoppable: "🔥 Unstoppable mode! Tackle your Top 3 priorities + 1 stretch goal."
-    };
-
-    const STORAGE_KEY = 'notion_control_glass_v2';
-
-    // Application state with fallback for blocked iframe storage
-    let appState = {
-        energy: 'manageable',
-        streak: 0,
-        lastLoggedDate: ''
-    };
-
-    let resetTimeout = null;
-
-    // Hardened storage getter wrapped in try-catch to prevent iframe crash in Notion
-    function safeLoadState() {
-        try {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            if (raw) {
-                const parsed = JSON.parse(raw);
-                appState = { ...appState, ...parsed };
-            }
-        } catch (e) {
-            console.warn("Iframe storage restricted by browser settings. Using in-memory fallback state.", e);
-        }
-    }
-
-    // Hardened storage setter wrapped in try-catch
-    function safeSaveState() {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-        } catch (e) {
-            console.warn("Unable to save state to localStorage inside iframe.", e);
-        }
-    }
-
-    // Format date string without weekday name (e.g., "September 10, 2026")
     function getFormattedDate(dateObj = new Date()) {
         const options = { month: 'long', day: 'numeric', year: 'numeric' };
         return dateObj.toLocaleDateString('en-US', options);
     }
 
-    // Get YYYY-MM-DD date key for single log per day check
     function getDateKey(dateObj = new Date()) {
         const y = dateObj.getFullYear();
         const m = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -445,99 +500,131 @@
         return `${y}-${m}-${d}`;
     }
 
-    function initWidget() {
-        safeLoadState();
+    function updateUI() {
+        const energySelect = document.getElementById('energySelect');
+        if (energySelect) {
+            energySelect.value = window.appState.energy || 'manageable';
+        }
 
-        // 1. Set Date Display without Weekday Name
-        const today = new Date();
-        document.getElementById('dateDisplay').innerText = getFormattedDate(today);
+        const guidanceDisplay = document.getElementById('guidanceDisplay');
+        if (guidanceDisplay) {
+            guidanceDisplay.innerText = ENERGY_GUIDANCE[window.appState.energy] || ENERGY_GUIDANCE.manageable;
+        }
 
-        // 2. Set Daily Rotating Quote
-        const quoteIndex = today.getDate() % MOTIVATIONAL_QUOTES.length;
-        document.getElementById('quoteDisplay').innerText = MOTIVATIONAL_QUOTES[quoteIndex];
-
-        // 3. Set Dropdown & Guidance Display
-        const selectElem = document.getElementById('energySelect');
-        selectElem.value = appState.energy || 'manageable';
-        updateGuidanceDisplay(appState.energy);
-
-        // 4. Set Streak Counter & Buttons
-        updateStreakUI();
-    }
-
-    function handleEnergyChange() {
-        const selectedValue = document.getElementById('energySelect').value;
-        appState.energy = selectedValue;
-        safeSaveState();
-        updateGuidanceDisplay(selectedValue);
-    }
-
-    function updateGuidanceDisplay(energyKey) {
-        const text = ENERGY_GUIDANCE[energyKey] || ENERGY_GUIDANCE.manageable;
-        document.getElementById('guidanceDisplay').innerText = text;
-    }
-
-    function updateStreakUI() {
-        document.getElementById('streakCount').innerText = appState.streak;
-        
-        const streakMsgElem = document.getElementById('streakMessage');
-        if (appState.streak === 1) {
-            streakMsgElem.innerText = "1 day logged!";
-        } else if (appState.streak > 1) {
-            streakMsgElem.innerText = `${appState.streak} days in a row!`;
-        } else {
-            streakMsgElem.innerText = "0 days in a row";
+        const streakCount = document.getElementById('streakCount');
+        const streakMessage = document.getElementById('streakMessage');
+        if (streakCount && streakMessage) {
+            streakCount.innerText = window.appState.streak || 0;
+            if (window.appState.streak === 1) {
+                streakMessage.innerText = "1 day logged!";
+            } else if (window.appState.streak > 1) {
+                streakMessage.innerText = `${window.appState.streak} days in a row!`;
+            } else {
+                streakMessage.innerText = "0 days in a row";
+            }
         }
 
         const logBtn = document.getElementById('logBtn');
-        const todayKey = getDateKey();
-        if (appState.lastLoggedDate === todayKey) {
-            logBtn.style.opacity = '0.75';
-            logBtn.innerText = '✓ logged today';
-        } else {
-            logBtn.style.opacity = '1';
-            logBtn.innerText = '+ log day';
+        if (logBtn) {
+            const todayKey = getDateKey();
+            if (window.appState.lastLoggedDate === todayKey) {
+                logBtn.style.opacity = '0.75';
+                logBtn.innerText = '✓ logged today';
+            } else {
+                logBtn.style.opacity = '1';
+                logBtn.innerText = '+ log day';
+            }
         }
     }
 
-    function logStreakDay() {
-        const todayKey = getDateKey();
+    window.handleEnergyChange = function() {
+        const selectedValue = document.getElementById('energySelect').value;
+        window.appState.energy = selectedValue;
+        saveState();
+        updateUI();
+    };
 
-        if (appState.lastLoggedDate === todayKey) {
+    window.logStreakDay = function() {
+        const todayKey = getDateKey();
+        if (window.appState.lastLoggedDate === todayKey) {
             showToast("Already logged for today! ✨");
             return;
         }
 
-        appState.streak += 1;
-        appState.lastLoggedDate = todayKey;
-        safeSaveState();
-
-        updateStreakUI();
+        window.appState.streak = (window.appState.streak || 0) + 1;
+        window.appState.lastLoggedDate = todayKey;
+        saveState();
+        updateUI();
         showToast("Day logged! Keep building. ✨");
-    }
+    };
 
-    function handleResetClick() {
+    window.handleResetClick = function() {
         const resetBtn = document.getElementById('resetBtn');
 
         if (!resetBtn.classList.contains('confirming')) {
-            // First click: Ask confirmation
             resetBtn.classList.add('confirming');
             resetBtn.innerText = 'Confirm Reset?';
 
-            // Auto-revert after 3.5 seconds if unclicked
             resetTimeout = setTimeout(() => {
                 revertResetBtn();
             }, 3500);
         } else {
-            // Second click: Perform reset
             clearTimeout(resetTimeout);
             revertResetBtn();
 
-            appState.streak = 0;
-            appState.lastLoggedDate = '';
-            safeSaveState();
-
-            updateStreakUI();
+            window.appState.streak = 0;
+            window.appState.lastLoggedDate = '';
+            saveState();
+            updateUI();
             showToast("Counter reset to 0 🔄");
         }
+    };
+
+    function revertResetBtn() {
+        const resetBtn = document.getElementById('resetBtn');
+        if (resetBtn) {
+            resetBtn.classList.remove('confirming');
+            resetBtn.innerText = '🔄 reset';
+        }
     }
+
+    function showToast(message) {
+        const toast = document.getElementById('toastMsg');
+        if (toast) {
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2200);
+        }
+    }
+
+    async function initWidget() {
+        safeLoadLocal();
+
+        const today = new Date();
+        const dateDisplay = document.getElementById('dateDisplay');
+        if (dateDisplay) {
+            dateDisplay.innerText = getFormattedDate(today);
+        }
+
+        const quoteIndex = today.getDate() % MOTIVATIONAL_QUOTES.length;
+        const quoteDisplay = document.getElementById('quoteDisplay');
+        if (quoteDisplay) {
+            quoteDisplay.innerText = MOTIVATIONAL_QUOTES[quoteIndex];
+        }
+
+        await initFirebase();
+        updateUI();
+    }
+
+    // CRITICAL GITHUB PAGES CDN / NOTION EXECUTION FIX:
+    // If DOM has already loaded when script executes, run initWidget immediately!
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initWidget);
+    } else {
+        initWidget();
+    }
+</script>
+</body>
+</html>
